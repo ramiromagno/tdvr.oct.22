@@ -2,7 +2,4 @@
 title: "Trainers"
 ---
 
-Ramiro Magno
-Isabel Duarte
-Bruno Louro
-João Brazão
+Ramiro Magno Isabel Duarte Bruno Louro João Brazão

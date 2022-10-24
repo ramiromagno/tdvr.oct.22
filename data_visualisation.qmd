@@ -2,8 +2,4 @@
 title: "Data visualisation"
 ---
 
-About this site
-
-```{r}
-1 + 1
-```
+Coming soon.

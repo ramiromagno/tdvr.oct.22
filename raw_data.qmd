@@ -37,22 +37,17 @@ data_raw_path
 
 Note that the path up to `data-raw/` is different from the one shown here.
 This is the job of the function `here()`: automatically determines the path
-of your `data-raw` directory.
-
-Now list the files in `data-raw/`:
+of your `data-raw` directory. Now list the files in `data-raw/`:
 
 ```{r}
 list.files(data_raw_path)
 ```
 
 There are four CSV files (`r list.files(data_raw_path, pattern = "*.csv")`) and
-two Excel files (`r list.files(data_raw_path, pattern = "*.xlsx")`).
-
-The CSV files contain data on the fiddler crabs sampled during the four field
-trips to Ria Formosa. The analogous data for Ria de Alvor is provided in the
-Excel file `Ria de Alvor.xlsx`.
-
-The file `quadrats.xlsx` contains the area for each of
+two Excel files (`r list.files(data_raw_path, pattern = "*.xlsx")`). The CSV
+files contain data on the fiddler crabs sampled during the four field trips to
+Ria Formosa. The analogous data for Ria de Alvor is provided in the Excel file
+`Ria de Alvor.xlsx`. The file `quadrats.xlsx` contains the area for each of
 [quadrats](https://en.wikipedia.org/wiki/Quadrat) defined in both Ria Formosa
 and Ria de Alvor.
 

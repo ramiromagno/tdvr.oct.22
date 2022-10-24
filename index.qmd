@@ -14,7 +14,7 @@ tidy data. In the second day you'll learn how to use `{ggplot2}` functions to
 turn your tidy dataset into charts and figures.
 
 To follow the course narrative browse the sections indicated on the left side
-bar of this website.
+bar of this website and do the exercises indicated.
 
 This training is designed to be an in-person course, but the course materials
 are provided for free, in the open, for the benefit of the community. If you use
