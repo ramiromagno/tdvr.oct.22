@@ -1,0 +1,180 @@
+---
+title: "Raw data"
+---
+
+### Data set description
+
+TODO: INCLUDE HERE DESCRIPTION ABOUT THE RAW DATA SET.
+
+### First acquaintances
+
+Start by loading the following required packages:
+
+```{r}
+#| warning: false
+library(tidyverse)
+library(here)
+library(tools)
+library(readxl)
+```
+
+Get a variable with the path to the directory containing the raw data files:
+
+```{r}
+data_raw_path <- here("data-raw")
+data_raw_path
+```
+
+Note that the path up to `data-raw/` is different from the one shown here.
+This is the job of the function `here()`: automatically determines the path
+of your `data-raw` directory.
+
+Now list the files in `data-raw/`:
+
+```{r}
+list.files(data_raw_path)
+```
+
+There are four CSV files (`r list.files(data_raw_path, pattern = "*.csv")`) and
+two Excel files (`r list.files(data_raw_path, pattern = "*.xlsx")`).
+
+The CSV files contain data on the fiddler crabs sampled during the four field
+trips to Ria Formosa. The analogous data for Ria de Alvor is provided in the
+Excel file `Ria de Alvor.xlsx`.
+
+The file `quadrats.xlsx` contains the area for each of
+[quadrats](https://en.wikipedia.org/wiki/Quadrat) defined in both Ria Formosa
+and Ria de Alvor.
+
+Use Excel to visually inspect the data in `Ria de Alvor.xlsx`, in one of the
+CSV files of your choice, and in `quadrats.xlsx`. Take some quick notes of:
+
+- How many data sets are there?
+- What is the observational unit in each data set?
+- What are the variables? Are the variable names used consistently across the
+data sets from Ria Formosa (CSV files) and Ria de Alvor (`Ria de Alvor.xlsx`)?
+- By looking at the values of the variables can you tell the type of variable? I.e., is it categorical/nominal, ordinal, binary, or continuous? Are there invalid or unexpected values?
+
+#### Exercise 1.1
+
+Collect the previous commands into your R script.
+
+```{r}
+#| eval: false
+#| code-fold: true
+#| code-summary: "Solution to Exercise 1.1"
+
+library(tidyverse)
+library(here)
+library(tools)
+library(readxl)
+
+# Define the path to the raw data
+data_raw_path <- here("data-raw")
+
+# List the raw data files
+list.files(data_raw_path)
+```
+
+### Programmatic acquaintances
+
+We will now read the data into R, and try to answer the same questions but using
+R code.
+Here's how you may read one of the CSV files using the `read_csv()` function:
+
+```{r}
+#| eval: false
+#| code-overflow: wrap
+rf_s_q1 <- readr::read_csv(file.path(data_raw_path, "rf_s_q1.csv"))
+```
+
+And here is how you read the `quadrats.xlsx` into R:
+
+```{r}
+#| eval: false
+#| code-overflow: wrap
+quadrats01 <- readxl::read_excel(file.path(data_raw_path, "quadrats.xlsx"))
+```
+
+#### Exercise 1.2
+
+Following those examples can you read all six files into R?
+
+```{r}
+#| code-fold: true
+#| output: false
+#| code-summary: "Solution to Exercise 1.2"
+
+# Reading the four CSV files (Ria Formosa)
+rf_s_q1 <- readr::read_csv(file.path(data_raw_path, "rf_s_q1.csv"))
+rf_s_q2 <- readr::read_csv(file.path(data_raw_path, "rf_s_q2.csv"))
+rf_w_q1 <- readr::read_csv(file.path(data_raw_path, "rf_w_q1.csv"))
+rf_w_q2 <- readr::read_csv(file.path(data_raw_path, "rf_w_q2.csv"))
+
+# Reading now the four sheets inside of "Ria de Alvor.xlsx"
+ra_path <- file.path(data_raw_path, "Ria de Alvor.xlsx")
+ra_s_q1 <- readxl::read_excel(ra_path, sheet = "summer-q1")
+ra_s_q2 <- readxl::read_excel(ra_path, sheet = "summer-q2")
+ra_w_q1 <- readxl::read_excel(ra_path, sheet = "winter-q1")
+ra_w_q2 <- readxl::read_excel(ra_path, sheet = "winter-q2")
+
+# Finally, reading the details about the quadrats
+quadrats01 <- readxl::read_excel(file.path(data_raw_path, "quadrats.xlsx"))
+```
+
+#### Exercise 1.3
+
+To inspect the data just loaded into R we may try the following functions
+on those objects:
+
+- `View()`
+- `dplyr::glimpse()`
+- `colnames()`
+- `nrow()` and `ncol()`
+- `head()` and `tail()`
+- `summary()` and `table()`
+- `unique()`
+
+Here are a few examples.
+
+Print each column as a row and indicate the column name, followed by its type,
+and the first values:
+
+```{r}
+dplyr::glimpse(rf_s_q1)
+```
+
+Column names of the data frame `rf_s_q1`:
+
+```{r}
+colnames(rf_s_q1)
+```
+
+Create a contingency table of the column `stage`:
+
+```{r}
+table(rf_s_q1$stage)
+```
+
+Show me the unique values present in the `sex` column:
+
+```{r}
+unique(rf_s_q1$sex)
+```
+
+Write down the insights you gained about your data:
+
+```{r}
+#| code-fold: true
+#| output: false
+#| code-summary: "Solution to Exercise 1.3"
+
+# Insights gained:
+# - `region` and `season` are missing variables from the data sets pertaining
+#   Ria Formosa. They were indicating in the name of the CSV files. The "rf" and
+#   the "s" or "w", meant "summer" and "winter, respectively. So we will need
+#   to add these two variables to `rf_s_q1`, `rf_s_q2`, `rf_w_q1` and `rf_w_q2`.
+# -   
+
+
+```

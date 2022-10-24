@@ -1,0 +1,21 @@
+---
+title: "Tidy Data & Visualisation in R"
+subtitle: "CCMAR, Oct 26--28, 2022"
+---
+
+This website provides the materials for the course [Tidy Data & Visualisation in
+R](https://www.ccmar.ualg.pt/advanced-tech-training/tidy-data-visualisation-r)
+held at CCMAR, University of Algarve.
+
+The course consists of two days, and an extra optional day of consulting with
+students' own data. In the first day you will learn the fundamental ideas behind
+tidy data and how to use Tidyverse functionality to turn your messy data into
+tidy data. In the second day you'll learn how to use `{ggplot2}` functions to
+turn your tidy dataset into charts and figures.
+
+To follow the course narrative browse the sections indicated on the left side
+bar of this website.
+
+This training is designed to be an in-person course, but the course materials
+are provided for free, in the open, for the benefit of the community. If you use
+these materials please give the credit: DOIXXX CC BY SA.

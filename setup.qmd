@@ -1,0 +1,20 @@
+---
+title: "Setup"
+---
+
+- Make sure you have R and RStudio installed.
+- Create an RStudio project in a new directory named `tdvr`.
+- Create three directories within `tdvr/`:
+  - `data-raw/`.
+  - `R/`.
+  - `plots/`.
+- Download the raw data files from XXX to `data-raw/`.
+- Download the template R scripts from XXX to `R/`.
+
+Finally, ensure that you have the following packages installed by running:
+
+``` r
+install.packages(c("tidyverse", "here", "readxl", "ggbeeswarm"))
+```
+
+You can now move on to the next section.

@@ -1,0 +1,10 @@
+---
+title: "Requirements"
+---
+
+Before starting the course please ensure that you:
+
+-   Bring your own laptop computer with R and RStudio installed.
+-   Have a basic understanding of R programming. If you need to brush up on your
+R skills, a hands-on R introductory tutorial will be made available for
+self-learning so that you can get familiarized with basic R before the course.

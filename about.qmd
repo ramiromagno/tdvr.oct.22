@@ -1,0 +1,40 @@
+---
+title: "Overview"
+---
+
+In research, a significant amount of effort is spent cleaning data to get it
+ready for visualisation and analysis. This course will teach you how to convert
+your messy dataset into tidy data using R for easy data visual exploration and
+analysis.
+
+For this, you will be introduced to the concept of tidy data, and guided through
+the programmatic steps in R required to structure datasets according to its
+principles. Additionally, we will show how tidy data works well together with
+graphical functions of the R package `{ggplot2}` thus facilitating initial
+exploration and analysis of the data. Finally, a "bring-your-own-data day"
+(optional day 3) will allow a smaller group of participants to obtain individual
+feedback and consulting on how to tidy up and visually inspect their own
+research datasets.
+
+## Programme
+
+### Day 1 \| Introduction to data wrangling
+
+-   Raw and processed data
+-   Components of tidy data
+-   Messy datasets
+-   Converting messy data to tidy data using tidyverse packages
+-   Hands-on exercises.
+
+### Day 2 \| Visualising tidy data using ggplot2
+
+-   Understanding how tidy data translates to graphics' aesthestics
+-   Plotting with one geom
+-   Combining several geoms
+-   Theming
+-   Saving graphs
+-   Hands-on exercises.
+
+### Day 3 \| Bring your own data day
+
+Individual consulting for data wrangling and visual exploration. 
