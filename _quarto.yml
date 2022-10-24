@@ -20,8 +20,6 @@ website:
       - data_tidying.qmd
       - data_visualisation.qmd
 
-    
-
 format:
   html:
     theme: cosmo

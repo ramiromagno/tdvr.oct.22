@@ -15,6 +15,69 @@ span.underline{text-decoration: underline;}
 div.column{display: inline-block; vertical-align: top; width: 50%;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -134,7 +197,19 @@ ul.task-list{list-style: none;}
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#add-missing-columns" id="toc-add-missing-columns" class="nav-link" data-scroll-target="#add-missing-columns">Add missing columns</a></li>
+  <li><a href="#exercise-2.1" id="toc-exercise-2.1" class="nav-link" data-scroll-target="#exercise-2.1">Exercise 2.1</a></li>
+  <li><a href="#make-variable-column-names-consistent-across-data-sets" id="toc-make-variable-column-names-consistent-across-data-sets" class="nav-link" data-scroll-target="#make-variable-column-names-consistent-across-data-sets">Make variable (column) names consistent across data sets</a></li>
+  <li><a href="#exercise-2.2" id="toc-exercise-2.2" class="nav-link" data-scroll-target="#exercise-2.2">Exercise 2.2</a></li>
+  <li><a href="#combining-the-crabs-data-sets-into-one" id="toc-combining-the-crabs-data-sets-into-one" class="nav-link" data-scroll-target="#combining-the-crabs-data-sets-into-one">Combining the crabs data sets into one</a></li>
+  <li><a href="#exercise-2.3" id="toc-exercise-2.3" class="nav-link" data-scroll-target="#exercise-2.3">Exercise 2.3</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -155,9 +230,259 @@ ul.task-list{list-style: none;}
 
 </header>
 
-<p>Coming soon.</p>
+<div class="cell">
+
+</div>
+<section id="introduction" class="level3">
+<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
+<p>We will now embark on a series of data transformations to convert our nine data sets into only two tidy data sets:</p>
+<ul>
+<li><code>crabs</code></li>
+<li><code>quadrats</code></li>
+</ul>
+<p>So bear these two data sets in mind as these are our end goal for the Data Tidying workflow of today.</p>
+<p>From the previous section Raw Data you should have generated these nine data sets that are now our starting point:</p>
+<ul>
+<li>Ria Formosa
+<ul>
+<li><code>rf_s_q1</code></li>
+<li><code>rf_s_q2</code></li>
+<li><code>rf_w_q1</code></li>
+<li><code>rf_w_q2</code></li>
+</ul></li>
+<li>Ria de Alvor
+<ul>
+<li><code>ra_s_q1</code></li>
+<li><code>ra_s_q2</code></li>
+<li><code>ra_w_q1</code></li>
+<li><code>ra_w_q2</code></li>
+</ul></li>
+<li>Quadrats
+<ul>
+<li><code>quadrats01</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="add-missing-columns" class="level3">
+<h3 class="anchored" data-anchor-id="add-missing-columns">Add missing columns</h3>
+<p>Currently, the fiddler crabs data is missing three variables:</p>
+<ul>
+<li><code>region</code></li>
+<li><code>season</code></li>
+<li><code>quadrat</code></li>
+</ul>
+<p>These variables were surreptitiously present in the names of the CSV files and in the name of the XLSX and included sheets.</p>
+<blockquote class="blockquote">
+<p>An an example, the file <code>rf_s_q1.csv</code>, whose data has been read into <code>rf_s_q1</code>, indicates in its name that crab sampling was performed in Ria Formosa (<code>"rf"</code>), in the Summer (<code>"s"</code>), in quadrat 1 (<code>"q1"</code>).</p>
+</blockquote>
+</section>
+<section id="exercise-2.1" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-2.1">Exercise 2.1</h3>
+<p>Use the function <code>dplyr::mutate()</code> to add the three missing columns, and respective values, to each of the eight data frames:</p>
+<ul>
+<li>Ria Formosa
+<ul>
+<li><code>rf_s_q1</code></li>
+<li><code>rf_s_q2</code></li>
+<li><code>rf_w_q1</code></li>
+<li><code>rf_w_q2</code></li>
+</ul></li>
+<li>Ria de Alvor
+<ul>
+<li><code>ra_s_q1</code></li>
+<li><code>ra_s_q2</code></li>
+<li><code>ra_w_q1</code></li>
+<li><code>ra_w_q2</code></li>
+</ul></li>
+</ul>
+<p>Here is an example for the data set <code>rf_s_q1</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the columns `region`, `season` and `quadrat`.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>rf_s_q1_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(rf_s_q1, <span class="at">region =</span> <span class="st">"Ria Formosa"</span>, <span class="at">season =</span> <span class="st">"summer"</span>, <span class="at">quadrat =</span> <span class="st">"q1"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the result.</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(rf_s_q1_01)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 1,243
+Columns: 15
+$ cl        &lt;dbl&gt; 21, 21, 15, 21, 19, 17, 19, 14, 19, 19, 17, 20, 22, 15, 17, …
+$ lcl       &lt;dbl&gt; 16, 13, 9, 16, 8, 7, 14, 13, 10, 12, 8, 16, 13, 9, 8, 19, 13…
+$ fw        &lt;dbl&gt; 15, 16, 10, 19, 14, 15, 15, 8, 11, 19, 8, 18, 15, 11, 13, 15…
+$ species   &lt;chr&gt; "A. farensis", "A. farensis", "A. farensis", "A. farensis", …
+$ longitude &lt;dbl&gt; -8.01873, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ is_gravid &lt;lgl&gt; FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,…
+$ rcl       &lt;dbl&gt; 10, 15, 5, 14, 7, 6, 9, 5, 10, 12, 13, 15, 11, 10, 6, 16, 12…
+$ stage     &lt;chr&gt; "juvenile", "juvenile", "juvenile", "juvenile", "juvenile", …
+$ sex       &lt;chr&gt; "?", "?", "female", "male or female", "female", "female", "f…
+$ id        &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 1…
+$ cw        &lt;dbl&gt; 27, 27, 19, 26, 24, 22, 25, 18, 24, 24, 21, 25, 27, 19, 22, …
+$ latitude  &lt;dbl&gt; 37.02606, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ region    &lt;chr&gt; "Ria Formosa", "Ria Formosa", "Ria Formosa", "Ria Formosa", …
+$ season    &lt;chr&gt; "summer", "summer", "summer", "summer", "summer", "summer", …
+$ quadrat   &lt;chr&gt; "q1", "q1", "q1", "q1", "q1", "q1", "q1", "q1", "q1", "q1", …</code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Solution to Exercise 2.1</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ria Formosa data sets</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>rf_s_q1_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(rf_s_q1, <span class="at">region =</span> <span class="st">"Ria Formosa"</span>, <span class="at">season =</span> <span class="st">"summer"</span>, <span class="at">quadrat =</span> <span class="st">"q1"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>rf_s_q2_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(rf_s_q2, <span class="at">region =</span> <span class="st">"Ria Formosa"</span>, <span class="at">season =</span> <span class="st">"summer"</span>, <span class="at">quadrat =</span> <span class="st">"q2"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>rf_w_q1_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(rf_w_q1, <span class="at">region =</span> <span class="st">"Ria Formosa"</span>, <span class="at">season =</span> <span class="st">"winter"</span>, <span class="at">quadrat =</span> <span class="st">"q1"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>rf_w_q2_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(rf_w_q2, <span class="at">region =</span> <span class="st">"Ria Formosa"</span>, <span class="at">season =</span> <span class="st">"winter"</span>, <span class="at">quadrat =</span> <span class="st">"q2"</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Ria de Alvor data sets</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>ra_s_q1_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(ra_s_q1, <span class="at">region =</span> <span class="st">"Ria de Alvor"</span>, <span class="at">season =</span> <span class="st">"summer"</span>, <span class="at">quadrat =</span> <span class="st">"q1"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>ra_s_q2_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(ra_s_q2, <span class="at">region =</span> <span class="st">"Ria de Alvor"</span>, <span class="at">season =</span> <span class="st">"summer"</span>, <span class="at">quadrat =</span> <span class="st">"q2"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>ra_w_q1_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(ra_w_q1, <span class="at">region =</span> <span class="st">"Ria de Alvor"</span>, <span class="at">season =</span> <span class="st">"winter"</span>, <span class="at">quadrat =</span> <span class="st">"q1"</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>ra_w_q2_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(ra_w_q2, <span class="at">region =</span> <span class="st">"Ria de Alvor"</span>, <span class="at">season =</span> <span class="st">"winter"</span>, <span class="at">quadrat =</span> <span class="st">"q2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="make-variable-column-names-consistent-across-data-sets" class="level3">
+<h3 class="anchored" data-anchor-id="make-variable-column-names-consistent-across-data-sets">Make variable (column) names consistent across data sets</h3>
+<p>Okay, now that we have all variables in our data sets, we will need to bind all data sets into one. But before we do that we will need to make sure that the variables (i.e.&nbsp;columns) across the eight data sets are all named in the same way. Otherwise, the step of combining the data sets will be cumbersome. We want it to be smooth. You’ll see in a bit what we mean.</p>
+<p>We can tell you that there are discrepancies between the data sets coming from Ria Formosa and Ria de Alvor. This is because the two teams of marine biologists had different ideas on how to name two of the variables.</p>
+<p>Also, the two teams had abbreviated the name of the morphological variables, and we find them hard to read, so we will rename them to new names as indicated in this table:</p>
+<table class="table">
+<colgroup>
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Current name</th>
+<th>New name</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>cw</code></td>
+<td><code>carapace_width</code></td>
+<td>Carapace width</td>
+</tr>
+<tr class="even">
+<td><code>cl</code></td>
+<td><code>carapace_length</code></td>
+<td>Carapace length</td>
+</tr>
+<tr class="odd">
+<td><code>fw</code></td>
+<td><code>front_width</code></td>
+<td>Front width (distance between the crab eye stalks)</td>
+</tr>
+<tr class="even">
+<td><code>lcl</code></td>
+<td><code>left_claw_length</code></td>
+<td>Left claw length</td>
+</tr>
+<tr class="odd">
+<td><code>rcl</code></td>
+<td><code>right_claw_length</code></td>
+<td>Right claw length</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="exercise-2.2" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-2.2">Exercise 2.2</h3>
+<ul>
+<li>Identify the two columns that have slightly different names between the Ria Formosa and the Ria de Alvor data sets.</li>
+<li>Rename those two columns in the Ria de Alvor data sets (<code>ra_s_q1_01</code>, <code>ra_s_q2_01</code>, <code>ra_w_q1_01</code> and <code>ra_w_q2_01</code>) to match the names used in Ria Formosa.</li>
+<li>Rename the abbreviated column names to new, more explicit, names, as indicated in the table above. Do this for all data sets.</li>
+<li>Name these new data sets as: <code>rf_s_q1_02</code>, <code>rf_s_q2_02</code>, etc. and <code>ra_s_q1_02</code>, <code>ra_s_q2_02</code>, etc..</li>
+</ul>
+<p>Use the function <code>dplyr::rename()</code> for renaming. Here is an example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>rf_s_q1_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(rf_s_q1_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(rf_s_q1_02)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 1,243
+Columns: 15
+$ carapace_length   &lt;dbl&gt; 21, 21, 15, 21, 19, 17, 19, 14, 19, 19, 17, 20, 22, …
+$ left_claw_length  &lt;dbl&gt; 16, 13, 9, 16, 8, 7, 14, 13, 10, 12, 8, 16, 13, 9, 8…
+$ front_width       &lt;dbl&gt; 15, 16, 10, 19, 14, 15, 15, 8, 11, 19, 8, 18, 15, 11…
+$ species           &lt;chr&gt; "A. farensis", "A. farensis", "A. farensis", "A. far…
+$ longitude         &lt;dbl&gt; -8.01873, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ is_gravid         &lt;lgl&gt; FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALS…
+$ right_claw_length &lt;dbl&gt; 10, 15, 5, 14, 7, 6, 9, 5, 10, 12, 13, 15, 11, 10, 6…
+$ stage             &lt;chr&gt; "juvenile", "juvenile", "juvenile", "juvenile", "juv…
+$ sex               &lt;chr&gt; "?", "?", "female", "male or female", "female", "fem…
+$ id                &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1…
+$ carapace_width    &lt;dbl&gt; 27, 27, 19, 26, 24, 22, 25, 18, 24, 24, 21, 25, 27, …
+$ latitude          &lt;dbl&gt; 37.02606, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ region            &lt;chr&gt; "Ria Formosa", "Ria Formosa", "Ria Formosa", "Ria Fo…
+$ season            &lt;chr&gt; "summer", "summer", "summer", "summer", "summer", "s…
+$ quadrat           &lt;chr&gt; "q1", "q1", "q1", "q1", "q1", "q1", "q1", "q1", "q1"…</code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Solution to Exercise 2.2</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What column names are there in Ria de Alvor and not in Ria Formosa?</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setdiff</span>(<span class="fu">colnames</span>(ra_s_q1_01), <span class="fu">colnames</span>(rf_s_q1_01))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># And now the reverse question.</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">setdiff</span>(<span class="fu">colnames</span>(rf_s_q1_01), <span class="fu">colnames</span>(ra_s_q1_01))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># So it seems Ria de Alvor data sets have named the `species` column as</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># `species_name`, and `is_gravid?` contains a question mark. </span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Let us fix by mapping:</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#  - `species_name` to `species`</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#  - `is_gravid?` to `is_gravid`</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co"># And also, do not forget to map the abbreviated column names to their full</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co"># names.</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Note how the mapping of the names is indicated in `rename()`:</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co"># New names go in the left hand side of the equal sign and old names in</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co"># the right hand side.</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Ria Formosa data sets</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>rf_s_q1_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(rf_s_q1_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>rf_s_q2_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(rf_s_q2_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>rf_w_q1_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(rf_w_q1_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>rf_w_q2_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(rf_w_q2_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Ria de Alvor data sets</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>ra_s_q1_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(ra_s_q1_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw, <span class="at">species =</span> species_name, <span class="at">is_gravid =</span> <span class="st">`</span><span class="at">is_gravid?</span><span class="st">`</span>)</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>ra_s_q2_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(ra_s_q2_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw, <span class="at">species =</span> species_name, <span class="at">is_gravid =</span> <span class="st">`</span><span class="at">is_gravid?</span><span class="st">`</span>)</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>ra_w_q1_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(ra_w_q1_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw, <span class="at">species =</span> species_name, <span class="at">is_gravid =</span> <span class="st">`</span><span class="at">is_gravid?</span><span class="st">`</span>)</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>ra_w_q2_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(ra_w_q2_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw, <span class="at">species =</span> species_name, <span class="at">is_gravid =</span> <span class="st">`</span><span class="at">is_gravid?</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="combining-the-crabs-data-sets-into-one" class="level3">
+<h3 class="anchored" data-anchor-id="combining-the-crabs-data-sets-into-one">Combining the crabs data sets into one</h3>
+<p>Now we will combine all the eight data sets into one single data frame. To do that we use the function <code>dplyr::bind_rows()</code>. And although the columns are not by the same order in all data sets, <code>bind_rows()</code> is smart enough to match each column of one data set to that of another. It does this by using the column names. And that is why it was so important harmonise the column names across data sets.</p>
+</section>
+<section id="exercise-2.3" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-2.3">Exercise 2.3</h3>
+<p>Bind all the eight data sets into one named <code>crabs01</code>. Note the number of rows and columns of this new data set.</p>
+<div class="cell">
+<details>
+<summary>Solution to Exercise 2.3</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>crabs01 <span class="ot">&lt;-</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    rf_s_q1_02,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    rf_s_q2_02,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    rf_w_q1_02,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    rf_w_q2_02,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    ra_s_q1_02,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    ra_s_q2_02,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    ra_w_q1_02,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    ra_w_q2_02</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>crabs01</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

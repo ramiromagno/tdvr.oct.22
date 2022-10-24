@@ -2,4 +2,208 @@
 title: "Data tidying"
 ---
 
-Coming soon.
+```{r}
+#| output: false
+#| echo: false
+library(tidyverse)
+library(here)
+library(tools)
+library(readxl)
+
+# Reading previous objects created in raw_data.qmd
+rf_s_q1 <- readRDS(file = "data/rf_s_q1.rds")
+rf_s_q2 <- readRDS(file = "data/rf_s_q2.rds")
+rf_w_q1 <- readRDS(file = "data/rf_w_q1.rds")
+rf_w_q2 <- readRDS(file = "data/rf_w_q2.rds")
+
+ra_s_q1 <- readRDS(file = "data/ra_s_q1.rds")
+ra_s_q2 <- readRDS(file = "data/ra_s_q2.rds")
+ra_w_q1 <- readRDS(file = "data/ra_w_q1.rds")
+ra_w_q2 <- readRDS(file = "data/ra_w_q2.rds")
+
+quadrats01 <- readRDS(file = "data/quadrats01.rds")
+```
+
+### Introduction
+
+We will now embark on a series of data transformations to convert our nine data sets into only two tidy data sets:
+
+-   `crabs`
+-   `quadrats`
+
+So bear these two data sets in mind as these are our end goal for the Data Tidying workflow of today.
+
+From the previous section Raw Data you should have generated these nine data sets that are now our starting point:
+
+-   Ria Formosa
+    -   `rf_s_q1`
+    -   `rf_s_q2`
+    -   `rf_w_q1`
+    -   `rf_w_q2`
+-   Ria de Alvor
+    -   `ra_s_q1`
+    -   `ra_s_q2`
+    -   `ra_w_q1`
+    -   `ra_w_q2`
+-   Quadrats
+    -   `quadrats01`
+
+### Add missing columns
+
+Currently, the fiddler crabs data is missing three variables:
+
+- `region`
+- `season`
+- `quadrat`
+
+These variables were surreptitiously present in the names of the CSV files and in
+the name of the XLSX and included sheets.
+
+> An an example, the file `rf_s_q1.csv`, whose data has been read into
+`rf_s_q1`, indicates in its name that crab sampling was performed in Ria Formosa
+(`"rf"`), in the Summer (`"s"`), in quadrat 1 (`"q1"`).
+
+### Exercise 2.1
+
+Use the function `dplyr::mutate()` to add the three missing columns, and respective values, to each of the eight data frames:
+
+-   Ria Formosa
+    -   `rf_s_q1`
+    -   `rf_s_q2`
+    -   `rf_w_q1`
+    -   `rf_w_q2`
+-   Ria de Alvor
+    -   `ra_s_q1`
+    -   `ra_s_q2`
+    -   `ra_w_q1`
+    -   `ra_w_q2`
+
+Here is an example for the data set `rf_s_q1`:
+
+```{r}
+# Add the columns `region`, `season` and `quadrat`.
+rf_s_q1_01 <- dplyr::mutate(rf_s_q1, region = "Ria Formosa", season = "summer", quadrat = "q1")
+
+# Check the result.
+dplyr::glimpse(rf_s_q1_01)
+```
+
+```{r}
+#| code-fold: true
+#| output: false
+#| code-summary: "Solution to Exercise 2.1"
+# Ria Formosa data sets
+rf_s_q1_01 <- dplyr::mutate(rf_s_q1, region = "Ria Formosa", season = "summer", quadrat = "q1")
+rf_s_q2_01 <- dplyr::mutate(rf_s_q2, region = "Ria Formosa", season = "summer", quadrat = "q2")
+rf_w_q1_01 <- dplyr::mutate(rf_w_q1, region = "Ria Formosa", season = "winter", quadrat = "q1")
+rf_w_q2_01 <- dplyr::mutate(rf_w_q2, region = "Ria Formosa", season = "winter", quadrat = "q2")
+
+# Ria de Alvor data sets
+ra_s_q1_01 <- dplyr::mutate(ra_s_q1, region = "Ria de Alvor", season = "summer", quadrat = "q1")
+ra_s_q2_01 <- dplyr::mutate(ra_s_q2, region = "Ria de Alvor", season = "summer", quadrat = "q2")
+ra_w_q1_01 <- dplyr::mutate(ra_w_q1, region = "Ria de Alvor", season = "winter", quadrat = "q1")
+ra_w_q2_01 <- dplyr::mutate(ra_w_q2, region = "Ria de Alvor", season = "winter", quadrat = "q2")
+```
+
+### Make variable (column) names consistent across data sets
+
+Okay, now that we have all variables in our data sets, we will need to bind all data sets into one. But before we do that we will need to make sure that the variables (i.e. columns) across the eight data sets are all named in the same way. Otherwise, the step of combining the data sets will be cumbersome. We want it to be smooth. You'll see in a bit what we mean.
+
+We can tell you that there are discrepancies between the data sets coming from Ria Formosa and Ria de Alvor. This is because the two teams of marine biologists had different ideas on how to name two of the variables.
+
+Also, the two teams had abbreviated the name of the morphological variables, and we find them hard to read, so we will rename them to new names as indicated in this table:
+
+| Current name | New name            | Meaning                                            |
+|------------------|------------------|-------------------------------------|
+| `cw`         | `carapace_width`    | Carapace width                                     |
+| `cl`         | `carapace_length`   | Carapace length                                    |
+| `fw`         | `front_width`       | Front width (distance between the crab eye stalks) |
+| `lcl`        | `left_claw_length`  | Left claw length                                   |
+| `rcl`        | `right_claw_length` | Right claw length                                  |
+
+### Exercise 2.2
+
+-   Identify the two columns that have slightly different names between the Ria Formosa and the Ria de Alvor data sets.
+-   Rename those two columns in the Ria de Alvor data sets (`ra_s_q1_01`, `ra_s_q2_01`, `ra_w_q1_01` and `ra_w_q2_01`) to match the names used in Ria Formosa.
+-   Rename the abbreviated column names to new, more explicit, names, as indicated in the table above. Do this for all data sets.
+-   Name these new data sets as: `rf_s_q1_02`, `rf_s_q2_02`, etc. and `ra_s_q1_02`, `ra_s_q2_02`, etc..
+
+Use the function `dplyr::rename()` for renaming. Here is an example:
+
+```{r}
+#| code-overflow: wrap
+rf_s_q1_02 <- dplyr::rename(rf_s_q1_01, carapace_width = cw, carapace_length = cl, left_claw_length = lcl, right_claw_length = rcl, front_width = fw)
+
+dplyr::glimpse(rf_s_q1_02)
+```
+
+```{r}
+#| code-fold: true
+#| output: false
+#| code-summary: "Solution to Exercise 2.2"
+
+# What column names are there in Ria de Alvor and not in Ria Formosa?
+setdiff(colnames(ra_s_q1_01), colnames(rf_s_q1_01))
+
+# And now the reverse question.
+setdiff(colnames(rf_s_q1_01), colnames(ra_s_q1_01))
+
+# So it seems Ria de Alvor data sets have named the `species` column as
+# `species_name`, and `is_gravid?` contains a question mark. 
+# Let us fix by mapping:
+#  - `species_name` to `species`
+#  - `is_gravid?` to `is_gravid`
+# And also, do not forget to map the abbreviated column names to their full
+# names.
+
+
+# Note how the mapping of the names is indicated in `rename()`:
+# New names go in the left hand side of the equal sign and old names in
+# the right hand side.
+# 
+# Ria Formosa data sets
+rf_s_q1_02 <- dplyr::rename(rf_s_q1_01, carapace_width = cw, carapace_length = cl, left_claw_length = lcl, right_claw_length = rcl, front_width = fw)
+rf_s_q2_02 <- dplyr::rename(rf_s_q2_01, carapace_width = cw, carapace_length = cl, left_claw_length = lcl, right_claw_length = rcl, front_width = fw)
+rf_w_q1_02 <- dplyr::rename(rf_w_q1_01, carapace_width = cw, carapace_length = cl, left_claw_length = lcl, right_claw_length = rcl, front_width = fw)
+rf_w_q2_02 <- dplyr::rename(rf_w_q2_01, carapace_width = cw, carapace_length = cl, left_claw_length = lcl, right_claw_length = rcl, front_width = fw)
+
+# Ria de Alvor data sets
+ra_s_q1_02 <- dplyr::rename(ra_s_q1_01, carapace_width = cw, carapace_length = cl, left_claw_length = lcl, right_claw_length = rcl, front_width = fw, species = species_name, is_gravid = `is_gravid?`)
+ra_s_q2_02 <- dplyr::rename(ra_s_q2_01, carapace_width = cw, carapace_length = cl, left_claw_length = lcl, right_claw_length = rcl, front_width = fw, species = species_name, is_gravid = `is_gravid?`)
+ra_w_q1_02 <- dplyr::rename(ra_w_q1_01, carapace_width = cw, carapace_length = cl, left_claw_length = lcl, right_claw_length = rcl, front_width = fw, species = species_name, is_gravid = `is_gravid?`)
+ra_w_q2_02 <- dplyr::rename(ra_w_q2_01, carapace_width = cw, carapace_length = cl, left_claw_length = lcl, right_claw_length = rcl, front_width = fw, species = species_name, is_gravid = `is_gravid?`)
+```
+
+### Combining the crabs data sets into one
+
+Now we will combine all the eight data sets into one single data frame. To do that
+we use the function `dplyr::bind_rows()`. And although the columns are not
+by the same order in all data sets, `bind_rows()` is smart enough to match
+each column of one data set to that of another. It does this by using the
+column names. And that is why it was so important harmonise the column names
+across data sets.
+
+### Exercise 2.3
+
+Bind all the eight data sets into one named `crabs01`. Note the number of rows
+and columns of this new data set.
+
+```{r}
+#| code-fold: true
+#| output: false
+#| code-summary: "Solution to Exercise 2.3"
+
+crabs01 <-
+  dplyr::bind_rows(
+    rf_s_q1_02,
+    rf_s_q2_02,
+    rf_w_q1_02,
+    rf_w_q2_02,
+    ra_s_q1_02,
+    ra_s_q2_02,
+    ra_w_q1_02,
+    ra_w_q2_02
+  )
+
+crabs01
+```
