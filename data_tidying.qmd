@@ -490,7 +490,7 @@ crabs07 <-
 
 Remember the `quadrats01` data set about the quadrats? It's time to update it
 too. Look at the column names, they're values! Also, the first column has an
-automatica name `...1` because originally in the Excel file it was empty.
+automatic name `...1` because originally in the Excel file it was empty.
 
 ```{r}
 quadrats01
