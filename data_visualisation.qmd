@@ -47,7 +47,7 @@ The basic recipe for creating a `{ggplot2}` plot:
 
 1. You provide the data (typically a tidy data set).
 2. You indicate how to map variables to aesthetics.
-3. You indicate what graphical primitives to use (`geom_*`).
+3. You indicate what geoms to use.
 
 And ggplot does the rest for you. We will now explore these three steps
 while trying to answer some basic questions about the fiddler crabs.
@@ -64,7 +64,6 @@ species. The result should look like:
 count(crabs, species)
 ```
 
-
 ```{r}
 #| code-fold: true
 #| code-summary: "Solution to Exercise 3.2"
@@ -73,3 +72,168 @@ ggplot(data = nr_crabs_by_species, mapping = aes(x = species, y = n)) +
   geom_col()
 ```
 
+### Explanation of solution 3.2
+
+Note how the categorical variable `species` has been mapped onto the x-axis, and
+the number of crabs `n` to the y-axis.
+
+To perform the mapping we used the function `aes()` and then passed the result
+to the `mapping` parameter of the function `ggplot()`. We can pry on what
+kind of information `aes()` is generating by evaluating it here in isolation:
+
+```{r}
+aes(x = species, y = n)
+```
+
+Also note that the observational unit of the data set `nr_crabs_by_species` is
+now the species, not an individual crab as we had in the case of the `crabs`
+data set. So we have three observations (each species), and each one corresponds
+to one bar in the plot.
+
+### Exercise 3.3
+
+What are the abundances of each sex?
+
+```{r}
+#| code-fold: true
+#| code-summary: "Solution to Exercise 3.3"
+nr_crabs_by_sex <- count(crabs, sex)
+ggplot(data = nr_crabs_by_sex, mapping = aes(x = sex, y = n)) +
+  geom_col()
+```
+
+Okay, so you've re-mapped the x-axis to the `sex` variable in the
+`nr_crabs_by_sex` data set.
+
+### Exercise 3.4
+
+Can you visually show the crab abundance by species and sex in the same plot? If
+you look at the plot, what does it tell you about how easy it might be to
+distinguish female and male crabs across species in the field?
+
+> Tip: pay attention to the number of `NA` values in each species.
+
+To determine the number of crabs by species and sex, just use `dplyr::count()`
+to count the number of crabs and ask for the combination of values for `species`
+and `sex`:
+
+```{r}
+dplyr::count(crabs, species, sex)
+```
+
+And now we can make a new bar plot with the following mappings:
+
+- `species` maps to bars' x-position.
+- `sex` maps to fill colour of the bars (the `fill` aesthetic).
+- `n` maps to number of crabs, as usual.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Solution to Exercise 3.4"
+nr_crabs_by_sp_sex <- count(crabs, species, sex)
+ggplot(data = nr_crabs_by_sp_sex, mapping = aes(x = species, y = n, fill = sex)) +
+  geom_col()
+```
+
+Nice! We got a stacked bar plot. `sex` is now mapped on the fill colour in the
+bar plot. Here are variations (V1-V5) on how we could tweak the
+width and positioning of the bars regarding the `sex` variable.
+
+::: {.panel-tabset}
+
+### V1
+
+```{r}
+nr_crabs_by_sp_sex %>%
+  ggplot(mapping = aes(x = species, y = n, fill = sex)) +
+  geom_col(position = "dodge")
+```
+
+### V2
+
+```{r}
+nr_crabs_by_sp_sex %>%
+  ggplot(mapping = aes(x = species, y = n, fill = sex)) +
+  geom_col(position = "dodge2")
+```
+
+### V3
+
+```{r}
+nr_crabs_by_sp_sex %>%
+  ggplot(mapping = aes(x = species, y = n, fill = sex)) +
+  geom_col(position = position_dodge2(preserve = "single"))
+```
+
+### V4
+
+```{r}
+nr_crabs_by_sp_sex %>%
+  tidyr::complete(species, sex) %>%
+  ggplot(mapping = aes(x = species, y = n, fill = sex)) +
+  geom_col(position = position_dodge2(preserve = "single"))
+```
+
+### V5
+
+```{r}
+nr_crabs_by_sp_sex %>%
+  tidyr::complete(species, sex, fill = list(n = 0)) %>%
+  ggplot(mapping = aes(x = species, y = n, fill = sex)) +
+  geom_col(position = position_dodge2(preserve = "single"))
+```
+
+:::
+
+### Exercise 3.5
+
+The latest plots were showing three variables:
+
+- `species` on the x-axis
+- `sex` as fill colour
+- `n` on the y-axis
+
+Let us see how far we may go by mapping more variables to other aesthetics.
+Besides the variables `species` and `sex`, `stage` (crab developmental stage) is
+also an important demographics' variable. Let us add too to the mix. There is an
+aesthetic called `colour` that adjust the colour of the bar outline.
+
+So, try to make a new plot where, in addition, the `colour` aesthetic is mapped
+to `stage`.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Solution to Exercise 3.5"
+count(crabs, species, sex, stage) %>%
+  ggplot(mapping = aes(x = species, y = n, fill = sex, colour = stage)) +
+  geom_col(position = "dodge2")
+```
+What an ugly plot! Perhaps trying to fit too many variables into one single
+plot may not be such a great idea.
+
+### Exercise 3.6
+
+There is one powerful technique to improve readability of your plots. If one
+plot is not enough, make several! This can be achieved with
+faceting. Faceting is the process of creating several related plots, each
+in their own facet (panel).
+
+Here is an example of three facets, one for each species:
+
+```{r}
+count(crabs, species, stage) %>%
+  ggplot(mapping = aes(x = stage, y = n)) +
+  geom_col(position = "dodge2") +
+  facet_wrap(vars(species))
+```
+
+Now, try to make the ugly plot again, but now using only three aesthetic
+mappings while leaving the species to be varied across facets:
+
+```{r}
+#| code-fold: true
+#| code-summary: "Solution to Exercise 3.6"
+ggplot(data = count(crabs, species, sex, stage), mapping = aes(x = sex, y = n, fill = stage)) +
+  geom_col(position = position_dodge2(preserve = "single")) +
+  facet_wrap(vars(species))
+```

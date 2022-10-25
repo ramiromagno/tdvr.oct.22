@@ -210,6 +210,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#mapping-variables-to-aesthetics-aes" id="toc-mapping-variables-to-aesthetics-aes" class="nav-link" data-scroll-target="#mapping-variables-to-aesthetics-aes">Mapping variables to aesthetics (aes)</a>
   <ul class="collapse">
   <li><a href="#exercise-3.2" id="toc-exercise-3.2" class="nav-link" data-scroll-target="#exercise-3.2">Exercise 3.2</a></li>
+  <li><a href="#explanation-of-solution-3.2" id="toc-explanation-of-solution-3.2" class="nav-link" data-scroll-target="#explanation-of-solution-3.2">Explanation of solution 3.2</a></li>
+  <li><a href="#exercise-3.3" id="toc-exercise-3.3" class="nav-link" data-scroll-target="#exercise-3.3">Exercise 3.3</a></li>
+  <li><a href="#exercise-3.4" id="toc-exercise-3.4" class="nav-link" data-scroll-target="#exercise-3.4">Exercise 3.4</a></li>
+  <li><a href="#exercise-3.5" id="toc-exercise-3.5" class="nav-link" data-scroll-target="#exercise-3.5">Exercise 3.5</a></li>
+  <li><a href="#exercise-3.6" id="toc-exercise-3.6" class="nav-link" data-scroll-target="#exercise-3.6">Exercise 3.6</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -273,7 +278,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ol type="1">
 <li>You provide the data (typically a tidy data set).</li>
 <li>You indicate how to map variables to aesthetics.</li>
-<li>You indicate what graphical primitives to use (<code>geom_*</code>).</li>
+<li>You indicate what geoms to use.</li>
 </ol>
 <p>And ggplot does the rest for you. We will now explore these three steps while trying to answer some basic questions about the fiddler crabs.</p>
 <section id="exercise-3.2" class="level3">
@@ -299,6 +304,187 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </details>
 <div class="cell-output-display">
 <p><img src="data_visualisation_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="explanation-of-solution-3.2" class="level3">
+<h3 class="anchored" data-anchor-id="explanation-of-solution-3.2">Explanation of solution 3.2</h3>
+<p>Note how the categorical variable <code>species</code> has been mapped onto the x-axis, and the number of crabs <code>n</code> to the y-axis.</p>
+<p>To perform the mapping we used the function <code>aes()</code> and then passed the result to the <code>mapping</code> parameter of the function <code>ggplot()</code>. We can pry on what kind of information <code>aes()</code> is generating by evaluating it here in isolation:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Aesthetic mapping: 
+* `x` -&gt; `species`
+* `y` -&gt; `n`</code></pre>
+</div>
+</div>
+<p>Also note that the observational unit of the data set <code>nr_crabs_by_species</code> is now the species, not an individual crab as we had in the case of the <code>crabs</code> data set. So we have three observations (each species), and each one corresponds to one bar in the plot.</p>
+</section>
+<section id="exercise-3.3" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-3.3">Exercise 3.3</h3>
+<p>What are the abundances of each sex?</p>
+<div class="cell">
+<details>
+<summary>Solution to Exercise 3.3</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>nr_crabs_by_sex <span class="ot">&lt;-</span> <span class="fu">count</span>(crabs, sex)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> nr_crabs_by_sex, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="data_visualisation_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Okay, so you’ve re-mapped the x-axis to the <code>sex</code> variable in the <code>nr_crabs_by_sex</code> data set.</p>
+</section>
+<section id="exercise-3.4" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-3.4">Exercise 3.4</h3>
+<p>Can you visually show the crab abundance by species and sex in the same plot? If you look at the plot, what does it tell you about how easy it might be to distinguish female and male crabs across species in the field?</p>
+<blockquote class="blockquote">
+<p>Tip: pay attention to the number of <code>NA</code> values in each species.</p>
+</blockquote>
+<p>To determine the number of crabs by species and sex, just use <code>dplyr::count()</code> to count the number of crabs and ask for the combination of values for <code>species</code> and <code>sex</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">count</span>(crabs, species, sex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 3
+  species           sex        n
+  &lt;fct&gt;             &lt;fct&gt;  &lt;int&gt;
+1 Afruca farensis   female  1219
+2 Afruca farensis   male    1223
+3 Afruca farensis   &lt;NA&gt;      78
+4 Uca olhanensis    female  1758
+5 Uca olhanensis    male    1834
+6 Uca olhanensis    &lt;NA&gt;     148
+7 Ucides alvorensis female   533
+8 Ucides alvorensis male     533</code></pre>
+</div>
+</div>
+<p>And now we can make a new bar plot with the following mappings:</p>
+<ul>
+<li><code>species</code> maps to bars’ x-position.</li>
+<li><code>sex</code> maps to fill colour of the bars (the <code>fill</code> aesthetic).</li>
+<li><code>n</code> maps to number of crabs, as usual.</li>
+</ul>
+<div class="cell">
+<details>
+<summary>Solution to Exercise 3.4</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>nr_crabs_by_sp_sex <span class="ot">&lt;-</span> <span class="fu">count</span>(crabs, species, sex)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> nr_crabs_by_sp_sex, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> n, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="data_visualisation_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Nice! We got a stacked bar plot. <code>sex</code> is now mapped on the fill colour in the bar plot. Here are variations (V1-V5) on how we could tweak the width and positioning of the bars regarding the <code>sex</code> variable.</p>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">V1</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">V2</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">V3</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">V4</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false">V5</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>nr_crabs_by_sp_sex <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> n, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="data_visualisation_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>nr_crabs_by_sp_sex <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> n, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="data_visualisation_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>nr_crabs_by_sp_sex <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> n, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_dodge2</span>(<span class="at">preserve =</span> <span class="st">"single"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="data_visualisation_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>nr_crabs_by_sp_sex <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">complete</span>(species, sex) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> n, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_dodge2</span>(<span class="at">preserve =</span> <span class="st">"single"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1 rows containing missing values (geom_col).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="data_visualisation_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>nr_crabs_by_sp_sex <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">complete</span>(species, sex, <span class="at">fill =</span> <span class="fu">list</span>(<span class="at">n =</span> <span class="dv">0</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> n, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_dodge2</span>(<span class="at">preserve =</span> <span class="st">"single"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="data_visualisation_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-3.5" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-3.5">Exercise 3.5</h3>
+<p>The latest plots were showing three variables:</p>
+<ul>
+<li><code>species</code> on the x-axis</li>
+<li><code>sex</code> as fill colour</li>
+<li><code>n</code> on the y-axis</li>
+</ul>
+<p>Let us see how far we may go by mapping more variables to other aesthetics. Besides the variables <code>species</code> and <code>sex</code>, <code>stage</code> (crab developmental stage) is also an important demographics’ variable. Let us add too to the mix. There is an aesthetic called <code>colour</code> that adjust the colour of the bar outline.</p>
+<p>So, try to make a new plot where, in addition, the <code>colour</code> aesthetic is mapped to <code>stage</code>.</p>
+<div class="cell">
+<details>
+<summary>Solution to Exercise 3.5</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">count</span>(crabs, species, sex, stage) <span class="sc">%&gt;%</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> n, <span class="at">fill =</span> sex, <span class="at">colour =</span> stage)) <span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="data_visualisation_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>What an ugly plot! Perhaps trying to fit too many variables into one single plot may not be such a great idea.</p>
+</section>
+<section id="exercise-3.6" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-3.6">Exercise 3.6</h3>
+<p>There is one powerful technique to improve readability of your plots. If one plot is not enough, make several! This can be achieved with faceting. Faceting is the process of creating several related plots, each in their own facet (panel).</p>
+<p>Here is an example of three facets, one for each species:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">count</span>(crabs, species, stage) <span class="sc">%&gt;%</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> stage, <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge2"</span>) <span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(species))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="data_visualisation_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Now, try to make the ugly plot again, but now using only three aesthetic mappings while leaving the species to be varied across facets:</p>
+<div class="cell">
+<details>
+<summary>Solution to Exercise 3.6</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">count</span>(crabs, species, sex, stage), <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">y =</span> n, <span class="at">fill =</span> stage)) <span class="sc">+</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_dodge2</span>(<span class="at">preserve =</span> <span class="st">"single"</span>)) <span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(species))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="data_visualisation_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 
