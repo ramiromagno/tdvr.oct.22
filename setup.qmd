@@ -9,9 +9,9 @@ title: "Setup"
   - `data-tidy/`
   - `R/`.
   - `plots/`.
-- Download the raw data files from
-[tdvr.oct.22/data-raw](https://github.com/ramiromagno/tdvr.oct.22/tree/main/data-raw)
-to your local folder `data-raw/`.
+- Download
+[data_raw.zip](https://github.com/ramiromagno/tdvr.oct.22/raw/main/data-raw/raw_data.zip)
+and unzip it into your local folder `data-raw/`.
 - From within RStudio, create a new R script file named `data-tidying.R` and
 save it to the `R/` folder.
 
