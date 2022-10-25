@@ -17,7 +17,7 @@ save it to the `R/` folder.
 Finally, ensure that you have the following packages installed by running:
 
 ``` r
-install.packages(c("tidyverse", "here", "readxl", "ggbeeswarm"))
+install.packages(c("tidyverse", "here", "readxl", "ggbeeswarm", "patchwork"))
 ```
 
 You can now move on to the next section Raw Data. You have a link at the bottom
