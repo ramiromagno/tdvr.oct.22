@@ -204,6 +204,81 @@ crabs01 <-
     ra_w_q1_02,
     ra_w_q2_02
   )
+```
 
+Here is how the `crabs01` should look like:
+
+```{r}
 crabs01
 ```
+
+### Organising variables (columns)
+
+An important part of the tidying up process is getting the data in a format
+that is as intuitive as possible for us. With regards to the existing columns
+in the `crabs01` data set, there are two things we can further improve:
+
+- Remove spurious columns, i.e. columns that do not contribute with useful 
+information for our analysis.
+- Reorder the columns, such that we start with slow-varying columns and
+end with rapid-varying columns.
+
+### Exercise 2.4
+
+- Remove the column `id` from the `crabs01` data set. This identifier was
+created by the the two teams to keep track of each of crab in each quadrat. But
+it adds no extra information for us, so we can safely drop it. You can use
+the function `dplyr::select()` to keep, but also, to drop columns.
+- Recognise that there are three groups of variables (columns):
+  - Contextual:
+    - `region`
+    - `season`
+    - `quadrat`
+    - `latitude`
+    - `longitude`
+  - Demographics:
+    - `species`
+    - `sex`
+    - `stage`
+    - `is_gravid`
+  - Morphological:
+    - `carapace_width`
+    - `carapace_length`
+    - `front_width`
+    - `left_claw_length`
+    - `right_claw_length`
+  
+  And re-arrange these columns in this order. You can use the function 
+  `dplyr::relocate()`. Name the resulting data set `crabs02`.
+
+```{r}
+#| code-fold: true
+#| output: false
+#| code-summary: "Solution to Exercise 2.4"
+crabs02 <-
+  crabs01 %>%
+  dplyr::select(-"id") %>%
+  dplyr::relocate(
+    region,
+    season,
+    quadrat,
+    latitude,
+    longitude,
+    species,
+    sex,
+    stage,
+    is_gravid,
+    carapace_width,
+    carapace_length,
+    front_width,
+    left_claw_length,
+    right_claw_length
+  )
+```
+
+Here is how the `crabs02` data set should look like:
+
+```{r}
+dplyr::glimpse(crabs02)
+```
+

@@ -208,6 +208,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#exercise-2.2" id="toc-exercise-2.2" class="nav-link" data-scroll-target="#exercise-2.2">Exercise 2.2</a></li>
   <li><a href="#combining-the-crabs-data-sets-into-one" id="toc-combining-the-crabs-data-sets-into-one" class="nav-link" data-scroll-target="#combining-the-crabs-data-sets-into-one">Combining the crabs data sets into one</a></li>
   <li><a href="#exercise-2.3" id="toc-exercise-2.3" class="nav-link" data-scroll-target="#exercise-2.3">Exercise 2.3</a></li>
+  <li><a href="#organising-variables-columns" id="toc-organising-variables-columns" class="nav-link" data-scroll-target="#organising-variables-columns">Organising variables (columns)</a></li>
+  <li><a href="#exercise-2.4" id="toc-exercise-2.4" class="nav-link" data-scroll-target="#exercise-2.4">Exercise 2.4</a></li>
   </ul>
 </nav>
     </div>
@@ -475,10 +477,119 @@ $ quadrat           &lt;chr&gt; "q1", "q1", "q1", "q1", "q1", "q1", "q1", "q1", 
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    ra_s_q2_02,</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    ra_w_q1_02,</span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    ra_w_q2_02</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>crabs01</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+</div>
+<p>Here is how the <code>crabs01</code> should look like:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>crabs01</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7,326 × 15
+   carapace_…¹ left_…² front…³ species longi…⁴ is_gr…⁵ right…⁶ stage sex      id
+         &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;lgl&gt;     &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;
+ 1          21      16      15 A. far…   -8.02 FALSE        10 juve… ?         1
+ 2          21      13      16 A. far…   NA    FALSE        15 juve… ?         2
+ 3          15       9      10 A. far…   NA    TRUE          5 juve… fema…     3
+ 4          21      16      19 A. far…   NA    FALSE        14 juve… male…     4
+ 5          19       8      14 A. far…   NA    FALSE         7 juve… fema…     5
+ 6          17       7      15 A. far…   NA    FALSE         6 juve… fema…     6
+ 7          19      14      15 A. far…   NA    FALSE         9 juve… fema…     7
+ 8          14      13       8 A. far…   NA    FALSE         5 juve… fema…     8
+ 9          19      10      11 A. far…   NA    TRUE         10 juve… fema…     9
+10          19      12      19 A. far…   NA    FALSE        12 juve… fema…    10
+# … with 7,316 more rows, 5 more variables: carapace_width &lt;dbl&gt;,
+#   latitude &lt;dbl&gt;, region &lt;chr&gt;, season &lt;chr&gt;, quadrat &lt;chr&gt;, and abbreviated
+#   variable names ¹​carapace_length, ²​left_claw_length, ³​front_width,
+#   ⁴​longitude, ⁵​is_gravid, ⁶​right_claw_length
+# ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</code></pre>
+</div>
+</div>
+</section>
+<section id="organising-variables-columns" class="level3">
+<h3 class="anchored" data-anchor-id="organising-variables-columns">Organising variables (columns)</h3>
+<p>An important part of the tidying up process is getting the data in a format that is as intuitive as possible for us. With regards to the existing columns in the <code>crabs01</code> data set, there are two things we can further improve:</p>
+<ul>
+<li>Remove spurious columns, i.e.&nbsp;columns that do not contribute with useful information for our analysis.</li>
+<li>Reorder the columns, such that we start with slow-varying columns and end with rapid-varying columns.</li>
+</ul>
+</section>
+<section id="exercise-2.4" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-2.4">Exercise 2.4</h3>
+<ul>
+<li>Remove the column <code>id</code> from the <code>crabs01</code> data set. This identifier was created by the the two teams to keep track of each of crab in each quadrat. But it adds no extra information for us, so we can safely drop it. You can use the function <code>dplyr::select()</code> to keep, but also, to drop columns.</li>
+<li>Recognise that there are three groups of variables (columns):
+<ul>
+<li>Contextual:
+<ul>
+<li><code>region</code></li>
+<li><code>season</code></li>
+<li><code>quadrat</code></li>
+<li><code>latitude</code></li>
+<li><code>longitude</code></li>
+</ul></li>
+<li>Demographics:
+<ul>
+<li><code>species</code></li>
+<li><code>sex</code></li>
+<li><code>stage</code></li>
+<li><code>is_gravid</code></li>
+</ul></li>
+<li>Morphological:
+<ul>
+<li><code>carapace_width</code></li>
+<li><code>carapace_length</code></li>
+<li><code>front_width</code></li>
+<li><code>left_claw_length</code></li>
+<li><code>right_claw_length</code></li>
+</ul></li>
+</ul>
+And re-arrange these columns in this order. You can use the function <code>dplyr::relocate()</code>. Name the resulting data set <code>crabs02</code>.</li>
+</ul>
+<div class="cell">
+<details>
+<summary>Solution to Exercise 2.4</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>crabs02 <span class="ot">&lt;-</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  crabs01 <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="st">"id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">relocate</span>(</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    region,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    season,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    quadrat,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    latitude,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    longitude,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    species,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    sex,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    stage,</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    is_gravid,</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    carapace_width,</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    carapace_length,</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    front_width,</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    left_claw_length,</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    right_claw_length</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Here is how the <code>crabs02</code> data set should look like:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(crabs02)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 7,326
+Columns: 14
+$ region            &lt;chr&gt; "Ria Formosa", "Ria Formosa", "Ria Formosa", "Ria Fo…
+$ season            &lt;chr&gt; "summer", "summer", "summer", "summer", "summer", "s…
+$ quadrat           &lt;chr&gt; "q1", "q1", "q1", "q1", "q1", "q1", "q1", "q1", "q1"…
+$ latitude          &lt;dbl&gt; 37.02606, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ longitude         &lt;dbl&gt; -8.01873, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ species           &lt;chr&gt; "A. farensis", "A. farensis", "A. farensis", "A. far…
+$ sex               &lt;chr&gt; "?", "?", "female", "male or female", "female", "fem…
+$ stage             &lt;chr&gt; "juvenile", "juvenile", "juvenile", "juvenile", "juv…
+$ is_gravid         &lt;lgl&gt; FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALS…
+$ carapace_width    &lt;dbl&gt; 27, 27, 19, 26, 24, 22, 25, 18, 24, 24, 21, 25, 27, …
+$ carapace_length   &lt;dbl&gt; 21, 21, 15, 21, 19, 17, 19, 14, 19, 19, 17, 20, 22, …
+$ front_width       &lt;dbl&gt; 15, 16, 10, 19, 14, 15, 15, 8, 11, 19, 8, 18, 15, 11…
+$ left_claw_length  &lt;dbl&gt; 16, 13, 9, 16, 8, 7, 14, 13, 10, 12, 8, 16, 13, 9, 8…
+$ right_claw_length &lt;dbl&gt; 10, 15, 5, 14, 7, 6, 9, 5, 10, 12, 13, 15, 11, 10, 6…</code></pre>
+</div>
 </div>
 
 
