@@ -5,7 +5,7 @@ title: "Setup"
 1. Make sure you have R and RStudio installed.
 2. Create an RStudio project in a new directory named `tdvr`.
 3. Download
-[raw-data.zip](https://github.com/ramiromagno/tdvr.oct.22/raw/main/data-raw/data-raw.zip)
+[data-raw.zip](https://github.com/ramiromagno/tdvr.oct.22/raw/main/data-raw/data-raw.zip)
 and unzip it into the directory `tdvr/`. This will create a new directory named `data-raw/` inside `tdvr/`.
 4. Create the following directories within `tdvr/`:
     - `data-tidy/`
