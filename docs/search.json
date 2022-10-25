@@ -39,7 +39,7 @@
     "href": "setup.html",
     "title": "Setup",
     "section": "",
-    "text": "Finally, ensure that you have the following packages installed by running:\ninstall.packages(c(\"tidyverse\", \"here\", \"readxl\", \"ggbeeswarm\"))\nYou can now move on to the next section."
+    "text": "data-tidy/\nR/\nplots/\n\n\nFrom within RStudio, create a new R script file named data-tidying.R and save it to the R/ folder.\n\nFinally, ensure that you have the following packages installed by running:\ninstall.packages(c(\"tidyverse\", \"here\", \"readxl\", \"ggbeeswarm\"))\nYou can now move on to the next section Raw Data. You have a link at the bottom right of this page."
   },
   {
     "objectID": "raw_data.html",

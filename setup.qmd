@@ -2,16 +2,16 @@
 title: "Setup"
 ---
 
-- Make sure you have R and RStudio installed.
-- Create an RStudio project in a new directory named `tdvr`.
-- Create the following directories within `tdvr/`:
-  - `data-tidy/`
-  - `R/`.
-  - `plots/`.
-- Download
+1. Make sure you have R and RStudio installed.
+2. Create an RStudio project in a new directory named `tdvr`.
+3. Download
 [raw-data.zip](https://github.com/ramiromagno/tdvr.oct.22/raw/main/data-raw/data-raw.zip)
-and unzip it into your local folder `data-raw/`.
-- From within RStudio, create a new R script file named `data-tidying.R` and
+and unzip it into the directory `tdvr/`. This will create a new directory named `data-raw/` inside `tdvr/`.
+4. Create the following directories within `tdvr/`:
+  - `data-tidy/`
+  - `R/`
+  - `plots/`
+5. From within RStudio, create a new R script file named `data-tidying.R` and
 save it to the `R/` folder.
 
 Finally, ensure that you have the following packages installed by running:
@@ -20,4 +20,5 @@ Finally, ensure that you have the following packages installed by running:
 install.packages(c("tidyverse", "here", "readxl", "ggbeeswarm"))
 ```
 
-You can now move on to the next section.
+You can now move on to the next section Raw Data. You have a link at the bottom
+right of this page.
