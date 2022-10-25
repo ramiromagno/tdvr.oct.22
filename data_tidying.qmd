@@ -11,6 +11,8 @@ library(tools)
 library(readxl)
 
 # Reading previous objects created in raw_data.qmd
+data_raw_path <- readRDS(file = "data/data_raw_path.rds")
+
 rf_s_q1 <- readRDS(file = "data/rf_s_q1.rds")
 rf_s_q2 <- readRDS(file = "data/rf_s_q2.rds")
 rf_w_q1 <- readRDS(file = "data/rf_w_q1.rds")
@@ -52,16 +54,13 @@ From the previous section Raw Data you should have generated these nine data set
 
 Currently, the fiddler crabs data is missing three variables:
 
-- `region`
-- `season`
-- `quadrat`
+-   `region`
+-   `season`
+-   `quadrat`
 
-These variables were surreptitiously present in the names of the CSV files and in
-the name of the XLSX and included sheets.
+These variables were surreptitiously present in the names of the CSV files and in the name of the XLSX and included sheets.
 
-> An an example, the file `rf_s_q1.csv`, whose data has been read into
-`rf_s_q1`, indicates in its name that crab sampling was performed in Ria Formosa
-(`"rf"`), in the Summer (`"s"`), in quadrat 1 (`"q1"`).
+> An an example, the file `rf_s_q1.csv`, whose data has been read into `rf_s_q1`, indicates in its name that crab sampling was performed in Ria Formosa (`"rf"`), in the Summer (`"s"`), in quadrat 1 (`"q1"`).
 
 ### Exercise 2.1
 
@@ -114,7 +113,7 @@ We can tell you that there are discrepancies between the data sets coming from R
 Also, the two teams had abbreviated the name of the morphological variables, and we find them hard to read, so we will rename them to new names as indicated in this table:
 
 | Current name | New name            | Meaning                                            |
-|------------------|------------------|-------------------------------------|
+|------------------|------------------|------------------------------------|
 | `cw`         | `carapace_width`    | Carapace width                                     |
 | `cl`         | `carapace_length`   | Carapace length                                    |
 | `fw`         | `front_width`       | Front width (distance between the crab eye stalks) |
@@ -176,17 +175,11 @@ ra_w_q2_02 <- dplyr::rename(ra_w_q2_01, carapace_width = cw, carapace_length = c
 
 ### Combining the crabs data sets into one
 
-Now we will combine all the eight data sets into one single data frame. To do that
-we use the function `dplyr::bind_rows()`. And although the columns are not
-by the same order in all data sets, `bind_rows()` is smart enough to match
-each column of one data set to that of another. It does this by using the
-column names. And that is why it was so important harmonise the column names
-across data sets.
+Now we will combine all the eight data sets into one single data frame. To do that we use the function `dplyr::bind_rows()`. And although the columns are not by the same order in all data sets, `bind_rows()` is smart enough to match each column of one data set to that of another. It does this by using the column names. And that is why it was so important harmonise the column names across data sets.
 
 ### Exercise 2.3
 
-Bind all the eight data sets into one named `crabs01`. Note the number of rows
-and columns of this new data set.
+Bind all the eight data sets into one named `crabs01`. Note the number of rows and columns of this new data set.
 
 ```{r}
 #| code-fold: true
@@ -214,42 +207,36 @@ crabs01
 
 ### Organising variables (columns)
 
-An important part of the tidying up process is getting the data in a format
-that is as intuitive as possible for us. With regards to the existing columns
-in the `crabs01` data set, there are two things we can further improve:
+An important part of the tidying up process is getting the data in a format that is as intuitive as possible for us. With regards to the existing columns in the `crabs01` data set, there are two things we can further improve:
 
-- Remove spurious columns, i.e. columns that do not contribute with useful 
-information for our analysis.
-- Reorder the columns, such that we start with slow-varying columns and
-end with rapid-varying columns.
+-   Remove spurious columns, i.e. columns that do not contribute with useful information for our analysis.
+-   Reorder the columns, such that we start with slow-varying columns and end with rapid-varying columns.
 
 ### Exercise 2.4
 
-- Remove the column `id` from the `crabs01` data set. This identifier was
-created by the the two teams to keep track of each of crab in each quadrat. But
-it adds no extra information for us, so we can safely drop it. You can use
-the function `dplyr::select()` to keep, but also, to drop columns.
-- Recognise that there are three groups of variables (columns):
-  - Contextual:
-    - `region`
-    - `season`
-    - `quadrat`
-    - `latitude`
-    - `longitude`
-  - Demographics:
-    - `species`
-    - `sex`
-    - `stage`
-    - `is_gravid`
-  - Morphological:
-    - `carapace_width`
-    - `carapace_length`
-    - `front_width`
-    - `left_claw_length`
-    - `right_claw_length`
-  
-  And re-arrange these columns in this order. You can use the function 
-  `dplyr::relocate()`. Name the resulting data set `crabs02`.
+-   Remove the column `id` from the `crabs01` data set. This identifier was created by the the two teams to keep track of each of crab in each quadrat. But it adds no extra information for us, so we can safely drop it. You can use the function `dplyr::select()` to keep, but also, to drop columns.
+
+-   Recognise that there are three groups of variables (columns):
+
+    -   Contextual:
+        -   `region`
+        -   `season`
+        -   `quadrat`
+        -   `latitude`
+        -   `longitude`
+    -   Demographics:
+        -   `species`
+        -   `sex`
+        -   `stage`
+        -   `is_gravid`
+    -   Morphological:
+        -   `carapace_width`
+        -   `carapace_length`
+        -   `front_width`
+        -   `left_claw_length`
+        -   `right_claw_length`
+
+    And re-arrange these columns in this order. You can use the function `dplyr::relocate()`. Name the resulting data set `crabs02`.
 
 ```{r}
 #| code-fold: true
@@ -282,3 +269,556 @@ Here is how the `crabs02` data set should look like:
 dplyr::glimpse(crabs02)
 ```
 
+### Filling in fake missing values
+
+Now let us start looking into the values of variables, and try to spot strange patterns or weird values.
+
+Look at the columns `latitude` and `longitude`. It seems that there are a lot of missing values (`NA`) and they all seem to be associated with Ria Formosa.
+
+Let us use the function `dplyr::count()` to count how many observations are there for a specific combination of variables. Let's try the columns `region`, `quadrat`, and `latitude` and `longitude`:
+
+```{r}
+count(crabs02, region, quadrat, latitude, longitude)
+```
+
+Let us look again at the first observations of `crabs02`. We will select a few columns, and slice a few rows for readability:
+
+```{r}
+crabs02 %>%
+  dplyr::select(region, quadrat, latitude, longitude) %>%
+  dplyr::slice(1:5)
+```
+
+It seems that the team of biologists at Ria Formosa did not record the latitude and longitude for all the observations except the first. Let's now see if this is happening for each group of observations defined by the combination of region-quadrat:
+
+```{r}
+crabs02 %>%
+  dplyr::filter(region == "Ria Formosa") %>%
+  dplyr::select(region, quadrat, latitude, longitude) %>%
+  dplyr::group_by(region, quadrat) %>%
+  dplyr::slice(1:3)
+```
+
+So, these are not truly missing values. These are just values that are absent because the team decided not to record them as they are all the same until the quadrat changes. To fix this, we will need to fill in the values.
+
+### Exercise 2.5
+
+Use the function `tidyr::fill()` to fill in the values. Look at the documentation of this function or in the `{tidyr}` cheatsheet for how to use it.
+
+```{r}
+#| code-fold: true
+#| output: false
+#| code-summary: "Solution to Exercise 2.5"
+crabs03 <- tidyr::fill(data = crabs02, latitude, longitude, .direction = "down")
+```
+
+### Recode `NA` aliases
+
+Sometimes the values used to represent missing values may take many different forms. Take a close look at the column `sex`, and check if there are any other values than `"female"` or `"male"`.
+
+### Exercise 2.6
+
+Detect `NA` aliases used by the researchers to mean missingness or uncertainty regarding the sex of the crabs, and recode them to R's appropriate value, i.e. the `NA` value.
+
+> Tip: use the `unique(crabs03$sex)` to see all unique values in that column. Then use a combination of `dplyr::mutate()`, `dplyr::if_else()` and the operator `%in%` to re-create the `sex` column with all missing values recoded to `NA`.
+
+```{r}
+#| code-fold: true
+#| output: false
+#| code-summary: "Solution to Exercise 2.6"
+
+# These `sex_na_aliases` were inferred after running `unique(crabs03$sex)`
+sex_na_aliases <- c("?", "male or female", "-", " ", "N/R")
+crabs04 <-
+  crabs03 %>%
+  mutate(sex = if_else(sex %in% sex_na_aliases, NA_character_, sex))
+```
+
+Compare the values in the `sex` column before and after the recoding:
+
+```{r}
+# Before the recoding
+unique(crabs03$sex)
+
+# After the recoding
+unique(crabs04$sex)
+```
+
+### General recoding of values
+
+As it turns out, the differences between the data sets generated at Ria Formosa and at Ria de Alvor are not exhausted yet... It seems that the variables `species` and `stage` are also not agreeing between the two Rias. Let us use `dplyr::count()` to see that:
+
+```{r}
+dplyr::count(crabs04, region, species, stage)
+```
+
+The team at Ria de Alvor abbreviated the names of the developmental stages, and the team at Ria Formosa seems to have abbreviated the species names. This problematic, we need to recode them.
+
+### Exercise 2.7
+
+Let us convert everything to full names:
+
+| Old value       | New value         |
+|-----------------|-------------------|
+| `j`             | `juvenile`        |
+| `p`             | `pre_puberty`     |
+| `s`             | `sub_adult`       |
+| `a`             | `adult`           |
+| `A. farensis`   | `Afruca farensis` |
+| `U. olhanensis` | `Uca olhanensis`  |
+
+> A combination of `dplyr::mutate()` and `dplyr::recode()` will be helpful.
+
+```{r}
+#| code-fold: true
+#| output: false
+#| code-summary: "Solution to Exercise 2.7"
+crabs05 <-
+  crabs04 %>%
+  dplyr::mutate(
+    species = dplyr::recode(
+      species,
+      `A. farensis` = "Afruca farensis",
+      `U. olhanensis` = "Uca olhanensis"),
+    stage = dplyr::recode(
+      stage,
+      `j` = "juvenile",
+      `p` = "pre_puberty",
+      `s` = "sub_adult",
+      `a` = "adult"
+    ),
+    quadrat = substr(quadrat, 2, 2)
+  )
+```
+
+The new data set should now show:
+
+```{r}
+dplyr::count(crabs05, region, species, stage)
+```
+
+### Fix scale of quantitative variables
+
+The Ria de Alvor team recorded the morphological measurements in centimetres,
+whereas the Ria Formosa team recorded them in millimetres. We need to fix this.
+
+### Exercise 2.8
+
+Multiply the values of the morphological variables of Ria de Alvor by 10 to
+transform from centimetres to millimetres, and hence harmonise them with
+Ria Formosa's values.
+
+```{r}
+#| code-fold: true
+#| output: false
+#| code-summary: "Solution to Exercise 2.8"
+crabs06 <-
+  crabs05 %>%
+  dplyr::mutate(
+    carapace_width = if_else(region == "Ria de Alvor", carapace_width * 10, carapace_width),
+    carapace_length = if_else(region == "Ria de Alvor", carapace_length * 10, carapace_length),
+    front_width = if_else(region == "Ria de Alvor", front_width * 10, front_width),
+    left_claw_length = if_else(region == "Ria de Alvor", left_claw_length * 10, left_claw_length),
+    right_claw_length = if_else(region == "Ria de Alvor", right_claw_length * 10, right_claw_length)
+  )
+```
+
+Compare the summary statistics before and after the transformation. Here is
+an example with `carapace_width`:
+
+```{r}
+# Before multiplication by 10
+summary(crabs05$carapace_width)
+```
+
+```{r}
+# After multiplication by 10
+summary(crabs06$carapace_width)
+```
+
+### Ensure appropriate variable types
+
+Currently our data set `crabs06` has a range of variables whose type is
+`character`, i.e. the individual values are strings. Examples are: `region`,
+`species`, `stage`, etc.. These are essentially nominal (or categorical), or
+ordered categorical (or ordinal) variables. In R these variable types are called
+`factor`s.
+
+Although it is possible to leave these variables as the `character` type, 
+converting to factors has a few advantages:
+
+- Memory efficiency: `factor`s take up less space than `character` variables,
+because they are effectively stored as integers.
+- Factors are useful when you know the set of possible values but they're not
+all present in a given data set. In contrast to a character vector, when you
+tabulate a factor you'll get counts of all categories, even unobserved ones.
+
+### Exercise 2.9
+
+Use a combination of `dplyr::mutate()` and `factor()` to convert the following
+variables to factors:
+
+- `region`
+- `season`
+- `species`
+- `sex`
+- `stage`
+
+Also, and because we do not have an integer variable in our `crabs06` data set,
+make the quadrat an integer (for illustrative purposes). Tip: use `as.integer()`
+for that.
+
+
+
+```{r}
+#| code-fold: true
+#| output: false
+#| code-summary: "Solution to Exercise 2.9"
+crabs07 <-
+  crabs06 %>%
+  dplyr::mutate(
+    region = factor(region),
+    season = factor(season),
+    quadrat = as.integer(quadrat),
+    species = factor(species),
+    sex = factor(sex, levels = c("female", "male")),
+    stage = factor(stage, levels = c("juvenile", "pre_puberty", "sub_adult", "adult"), ordered = TRUE)
+  )
+```
+
+### Column names are values, not variable names
+
+Remember the `quadrats01` data set about the quadrats? It's time to update it
+too. Look at the column names, they're values! Also, the first column has an
+automatica name `...1` because originally in the Excel file it was empty.
+
+```{r}
+quadrats01
+```
+
+To fix this data set we will use two fancy functions that we haven't used yet:
+`tidyr::pivot_longer()` and `tidyr::separate()`.
+
+### Exercise 2.10
+
+Convert the `quadrats01` data set into a tidy data set by moving the values
+in the column names to table elements, and create new columns to accomodate
+them.
+
+```{r}
+#| code-fold: true
+#| output: false
+#| code-summary: "Solution to Exercise 2.10"
+quadrats02 <-
+  quadrats01 %>%
+  dplyr::select(-1) |>
+  tidyr::pivot_longer(cols = everything(), names_to = "region_quadrat", values_to = "area") |>
+  tidyr::separate(col = "region_quadrat", into = c("region", "quadrat"), sep = "-")
+```
+
+### Exercise 2.11
+
+And just like we did before, convert the `region` variable to factor and
+`quadrat` to integer and save the result to `quadrats03`.
+
+```{r}
+#| code-fold: true
+#| output: false
+#| code-summary: "Solution to Exercise 2.11"
+quadrats03 <-
+  quadrats02 %>%
+  dplyr::mutate(
+    region = factor(region),
+    quadrat = as.integer(substr(quadrat, 2, 2))
+  )
+```
+
+### Multiple observational unit types in one table
+
+> Datasets often involve values collected at multiple levels, on different types
+of observational units. During tidying, each type of observational unit should
+be stored in its own table. This is closely related to the idea of database
+normalisation, where each fact is expressed in only one place. It’s important
+because otherwise inconsistencies can arise. 
+[From `{tidyr}`vignette on multiple types](https://tidyr.tidyverse.org/articles/tidy-data.html#multiple-types)
+
+There are two variables (columns) in our `crabs07` data set that characterise
+the quadrats, not the crabs individually. These are `latitude` and `longitude`.
+Yet, they've been recorded in the crabs data sets but belong in the quadrats
+data set.
+
+### Exercise 2.12
+
+To fix this, we will need to get the unique latitude and longitude values for
+each quadrat. There is a nifty function that allow us to that:
+`dplyr::distinct()`. And combined with `dplyr::left_join()` will get us there...
+
+```{r}
+#| code-fold: true
+#| output: false
+#| code-summary: "Solution to Exercise 2.12"
+quadrats_coord <- dplyr::distinct(crabs07, region, quadrat, latitude, longitude)
+quadrats04 <- dplyr::left_join(quadrats03, quadrats_coord)
+
+# And now we can drop latitude and longitude from the `crabs07` data set.
+# Note the minus sign behind the vector of column names.
+crabs08 <- select(crabs07, -c("latitude", "longitude"))
+```
+
+Here's how it should like:
+
+```{r}
+quadrats04
+```
+
+
+```{r}
+crabs08
+```
+
+### Wrapping up
+
+Finally assign the last versions of our data sets into simpler names, and save
+them to disk. These will be the starting point of tomorrow's workflow about Data
+Visualisation with `{ggplot2}`.
+
+```{r}
+#| code-fold: true
+#| output: false
+#| code-summary: "Solution to Exercise 2.13"
+# Assign to new variables with simpler names
+quadrats <- quadrats04
+crabs <- crabs08
+
+# Export to disk
+data_tidy_path <- here::here("data-tidy")
+readr::write_csv(quadrats, file = file.path(data_tidy_path, "quadrats.csv"))
+readr::write_csv(crabs, file = file.path(data_tidy_path, "crabs.csv"))
+
+saveRDS(quadrats, file = file.path(data_tidy_path, "quadrats.rds"))
+saveRDS(crabs, file = file.path(data_tidy_path, "crabs.rds"))
+```
+
+### Data tidying script
+
+Here is the entire script containing all code from the exercises present
+in section Raw Data and Data Tidying.
+
+```{r}
+#| eval: false
+#| output: false
+#| code-summary: "Final script for day 1"
+
+#
+# Raw Data
+#
+
+library(tidyverse)
+library(here)
+library(tools)
+library(readxl)
+
+# Define the path to the raw data
+data_raw_path <- here("data-raw")
+
+# List the raw data files
+list.files(data_raw_path)
+
+# Reading the four CSV files (Ria Formosa)
+rf_s_q1 <- readr::read_csv(file.path(data_raw_path, "rf_s_q1.csv"))
+rf_s_q2 <- readr::read_csv(file.path(data_raw_path, "rf_s_q2.csv"))
+rf_w_q1 <- readr::read_csv(file.path(data_raw_path, "rf_w_q1.csv"))
+rf_w_q2 <- readr::read_csv(file.path(data_raw_path, "rf_w_q2.csv"))
+
+# Reading now the four sheets inside of "Ria de Alvor.xlsx"
+ra_path <- file.path(data_raw_path, "Ria de Alvor.xlsx")
+ra_s_q1 <- readxl::read_excel(ra_path, sheet = "summer-q1")
+ra_s_q2 <- readxl::read_excel(ra_path, sheet = "summer-q2")
+ra_w_q1 <- readxl::read_excel(ra_path, sheet = "winter-q1")
+ra_w_q2 <- readxl::read_excel(ra_path, sheet = "winter-q2")
+
+# Finally, reading the details about the quadrats
+quadrats01 <- readxl::read_excel(file.path(data_raw_path, "quadrats.xlsx"))
+
+# Insights gained:
+# - `region` and `season` are missing variables from the data sets pertaining
+#   Ria Formosa. They are implictly indicated in the name of the CSV files. The "rf" and
+#   the "s" or "w", meant "summer" and "winter, respectively. So we will need
+#   to add these two variables to `rf_s_q1`, `rf_s_q2`, `rf_w_q1` and `rf_w_q2`.
+# - TODO: To be completed!!
+
+
+
+#
+# Data Tidying
+#
+
+# EXERCISE 2.1
+# Ria Formosa data sets
+rf_s_q1_01 <- dplyr::mutate(rf_s_q1, region = "Ria Formosa", season = "summer", quadrat = "q1")
+rf_s_q2_01 <- dplyr::mutate(rf_s_q2, region = "Ria Formosa", season = "summer", quadrat = "q2")
+rf_w_q1_01 <- dplyr::mutate(rf_w_q1, region = "Ria Formosa", season = "winter", quadrat = "q1")
+rf_w_q2_01 <- dplyr::mutate(rf_w_q2, region = "Ria Formosa", season = "winter", quadrat = "q2")
+
+# Ria de Alvor data sets
+ra_s_q1_01 <- dplyr::mutate(ra_s_q1, region = "Ria de Alvor", season = "summer", quadrat = "q1")
+ra_s_q2_01 <- dplyr::mutate(ra_s_q2, region = "Ria de Alvor", season = "summer", quadrat = "q2")
+ra_w_q1_01 <- dplyr::mutate(ra_w_q1, region = "Ria de Alvor", season = "winter", quadrat = "q1")
+ra_w_q2_01 <- dplyr::mutate(ra_w_q2, region = "Ria de Alvor", season = "winter", quadrat = "q2")
+
+# EXERCISE 2.2
+# What column names are there in Ria de Alvor and not in Ria Formosa?
+setdiff(colnames(ra_s_q1_01), colnames(rf_s_q1_01))
+
+# And now the reverse question.
+setdiff(colnames(rf_s_q1_01), colnames(ra_s_q1_01))
+
+# So it seems Ria de Alvor data sets have named the `species` column as
+# `species_name`, and `is_gravid?` contains a question mark. 
+# Let us fix by mapping:
+#  - `species_name` to `species`
+#  - `is_gravid?` to `is_gravid`
+# And also, do not forget to map the abbreviated column names to their full
+# names.
+
+
+# Note how the mapping of the names is indicated in `rename()`:
+# New names go in the left hand side of the equal sign and old names in
+# the right hand side.
+# 
+# Ria Formosa data sets
+rf_s_q1_02 <- dplyr::rename(rf_s_q1_01, carapace_width = cw, carapace_length = cl, left_claw_length = lcl, right_claw_length = rcl, front_width = fw)
+rf_s_q2_02 <- dplyr::rename(rf_s_q2_01, carapace_width = cw, carapace_length = cl, left_claw_length = lcl, right_claw_length = rcl, front_width = fw)
+rf_w_q1_02 <- dplyr::rename(rf_w_q1_01, carapace_width = cw, carapace_length = cl, left_claw_length = lcl, right_claw_length = rcl, front_width = fw)
+rf_w_q2_02 <- dplyr::rename(rf_w_q2_01, carapace_width = cw, carapace_length = cl, left_claw_length = lcl, right_claw_length = rcl, front_width = fw)
+
+# Ria de Alvor data sets
+ra_s_q1_02 <- dplyr::rename(ra_s_q1_01, carapace_width = cw, carapace_length = cl, left_claw_length = lcl, right_claw_length = rcl, front_width = fw, species = species_name, is_gravid = `is_gravid?`)
+ra_s_q2_02 <- dplyr::rename(ra_s_q2_01, carapace_width = cw, carapace_length = cl, left_claw_length = lcl, right_claw_length = rcl, front_width = fw, species = species_name, is_gravid = `is_gravid?`)
+ra_w_q1_02 <- dplyr::rename(ra_w_q1_01, carapace_width = cw, carapace_length = cl, left_claw_length = lcl, right_claw_length = rcl, front_width = fw, species = species_name, is_gravid = `is_gravid?`)
+ra_w_q2_02 <- dplyr::rename(ra_w_q2_01, carapace_width = cw, carapace_length = cl, left_claw_length = lcl, right_claw_length = rcl, front_width = fw, species = species_name, is_gravid = `is_gravid?`)
+
+
+# EXERCISE 2.3
+crabs01 <-
+  dplyr::bind_rows(
+    rf_s_q1_02,
+    rf_s_q2_02,
+    rf_w_q1_02,
+    rf_w_q2_02,
+    ra_s_q1_02,
+    ra_s_q2_02,
+    ra_w_q1_02,
+    ra_w_q2_02
+  )
+
+
+# EXERCISE 2.4
+crabs02 <-
+  crabs01 %>%
+  dplyr::select(-"id") %>%
+  dplyr::relocate(
+    region,
+    season,
+    quadrat,
+    latitude,
+    longitude,
+    species,
+    sex,
+    stage,
+    is_gravid,
+    carapace_width,
+    carapace_length,
+    front_width,
+    left_claw_length,
+    right_claw_length
+  )
+
+# EXERCISE 2.5
+crabs03 <- tidyr::fill(data = crabs02, latitude, longitude, .direction = "down")
+
+# EXERCISE 2.6
+# These `sex_na_aliases` were inferred after running `unique(crabs03$sex)`
+sex_na_aliases <- c("?", "male or female", "-", " ", "N/R")
+crabs04 <-
+  crabs03 %>%
+  mutate(sex = if_else(sex %in% sex_na_aliases, NA_character_, sex))
+
+# EXERCISE 2.7
+crabs05 <-
+  crabs04 %>%
+  dplyr::mutate(
+    species = dplyr::recode(
+      species,
+      `A. farensis` = "Afruca farensis",
+      `U. olhanensis` = "Uca olhanensis"),
+    stage = dplyr::recode(
+      stage,
+      `j` = "juvenile",
+      `p` = "pre_puberty",
+      `s` = "sub_adult",
+      `a` = "adult"
+    ),
+    quadrat = substr(quadrat, 2, 2)
+  )
+
+# EXERCISE 2.8
+crabs06 <-
+  crabs05 %>%
+  dplyr::mutate(
+    carapace_width = if_else(region == "Ria de Alvor", carapace_width * 10, carapace_width),
+    carapace_length = if_else(region == "Ria de Alvor", carapace_length * 10, carapace_length),
+    front_width = if_else(region == "Ria de Alvor", front_width * 10, front_width),
+    left_claw_length = if_else(region == "Ria de Alvor", left_claw_length * 10, left_claw_length),
+    right_claw_length = if_else(region == "Ria de Alvor", right_claw_length * 10, right_claw_length)
+  )
+
+# EXERCISE 2.9
+crabs07 <-
+  crabs06 %>%
+  dplyr::mutate(
+    region = factor(region),
+    season = factor(season),
+    quadrat = as.integer(quadrat),
+    species = factor(species),
+    sex = factor(sex, levels = c("female", "male")),
+    stage = factor(stage, levels = c("juvenile", "pre_puberty", "sub_adult", "adult"), ordered = TRUE)
+  )
+
+# EXERCISE 2.10
+quadrats02 <-
+  quadrats01 %>%
+  dplyr::select(-1) |>
+  tidyr::pivot_longer(cols = everything(), names_to = "region_quadrat", values_to = "area") |>
+  tidyr::separate(col = "region_quadrat", into = c("region", "quadrat"), sep = "-")
+
+# EXERCISE 2.11
+quadrats03 <-
+  quadrats02 %>%
+  dplyr::mutate(
+    region = factor(region),
+    quadrat = as.integer(substr(quadrat, 2, 2))
+  )
+
+# EXERCISE 2.12
+quadrats_coord <- dplyr::distinct(crabs07, region, quadrat, latitude, longitude)
+quadrats04 <- dplyr::left_join(quadrats03, quadrats_coord)
+
+# And now we can drop latitude and longitude from the `crabs07` data set.
+# Note the minus sign behind the vector of column names.
+crabs08 <- select(crabs07, -c("latitude", "longitude"))
+
+# EXERCISE 2.13
+# Assign to new variables with simpler names
+quadrats <- quadrats04
+crabs <- crabs08
+
+# Export to disk
+data_tidy_path <- here::here("data-tidy")
+readr::write_csv(quadrats, file = file.path(data_tidy_path, "quadrats.csv"))
+readr::write_csv(crabs, file = file.path(data_tidy_path, "crabs.csv"))
+
+saveRDS(quadrats, file = file.path(data_tidy_path, "quadrats.rds"))
+saveRDS(crabs, file = file.path(data_tidy_path, "crabs.rds"))
+
+```

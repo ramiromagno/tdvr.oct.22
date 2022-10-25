@@ -170,7 +170,7 @@ Write down as comments the insights you gained about the data:
 #   Ria Formosa. They are implictly indicated in the name of the CSV files. The "rf" and
 #   the "s" or "w", meant "summer" and "winter, respectively. So we will need
 #   to add these two variables to `rf_s_q1`, `rf_s_q2`, `rf_w_q1` and `rf_w_q2`.
-# -   
+# - TODO: To be completed!!
 
 
 ```
@@ -180,6 +180,8 @@ Write down as comments the insights you gained about the data:
 #| output: false
 #| echo: false
 # Saving these R objects to disk to read them back again in other qmd files.
+saveRDS(data_raw_path, file = "data/data_raw_path.rds")
+
 saveRDS(rf_s_q1, file = "data/rf_s_q1.rds")
 saveRDS(rf_s_q2, file = "data/rf_s_q2.rds")
 saveRDS(rf_w_q1, file = "data/rf_w_q1.rds")
