@@ -5,12 +5,11 @@ title: "Setup"
 - Make sure you have R and RStudio installed.
 - Create an RStudio project in a new directory named `tdvr`.
 - Create the following directories within `tdvr/`:
-  - `data-raw/`.
   - `data-tidy/`
   - `R/`.
   - `plots/`.
 - Download
-[data_raw.zip](https://github.com/ramiromagno/tdvr.oct.22/raw/main/data-raw/raw_data.zip)
+[raw-data.zip](https://github.com/ramiromagno/tdvr.oct.22/raw/main/data-raw/data-raw.zip)
 and unzip it into your local folder `data-raw/`.
 - From within RStudio, create a new R script file named `data-tidying.R` and
 save it to the `R/` folder.

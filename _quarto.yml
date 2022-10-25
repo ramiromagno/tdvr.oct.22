@@ -5,6 +5,7 @@ project:
 website:
   title: "Tidy Data & Visualisation in R"
   page-navigation: true
+  page-footer: "Copyright 2022, Ramiro Magno & Isabel Duarte" 
   navbar:
     left:
       - href: index.qmd
