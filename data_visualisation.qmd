@@ -2,4 +2,45 @@
 title: "Data visualisation"
 ---
 
-Coming soon.
+## Introduction
+
+Before we start with our day on Data Visualisation, create a new R script file
+named `data-visualisation.R` in the folder `R/`. This will be the file
+containing the R code related to Data Visualisation.
+
+In this tutorial you'll learn:
+
+- How to map variables in tidy data sets to visual attributes of graphics, called aesthetics in `{ggplot2}`.
+- How to make different plot types by using different "geometries", called `geoms` in `{ggplot2}`.
+- How to tweak the style of your plots.
+- How to export your plots to files (JPEG, PNG, PDF or SVG).
+- How to make article figures by combining several plots together using the `{patchwork}` package.
+
+## The `crabs` and `quadrats` data sets
+
+### Exercise 3.1
+
+ - Start by loading required packages: `{tidyverse}`, `{here}` and
+ `{patchwork}`. Note that the `{tidyverse}` package already includes the
+ `{ggplot2}` package.
+ - Read in the two tidy data sets generated yesterday: `crabs` and `quadrats`.
+ Use the function `readRDS()` to read the respective `.rds` files from the
+ folder `data-tidy/`.
+
+
+```{r}
+#| code-fold: true
+#| output: false
+#| code-summary: "Solution to Exercise 3.1"
+library(tidyverse)
+library(here)
+library(patchwork)
+
+data_tidy_path <- here::here("data-tidy")
+quadrats <- readRDS(file = file.path(data_tidy_path, "quadrats.rds"))
+crabs <- readRDS(file = file.path(data_tidy_path, "crabs.rds"))
+```
+
+## Mapping variables to aesthetics (aes)
+
+Working on it!

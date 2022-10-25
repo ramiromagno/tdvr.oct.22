@@ -26,7 +26,7 @@ ra_w_q2 <- readRDS(file = "data/ra_w_q2.rds")
 quadrats01 <- readRDS(file = "data/quadrats01.rds")
 ```
 
-### Introduction
+## Introduction
 
 We will now embark on a series of data transformations to convert our nine data sets into only two tidy data sets:
 
@@ -50,7 +50,7 @@ From the previous section Raw Data you should have generated these nine data set
 -   Quadrats
     -   `quadrats01`
 
-### Add missing columns
+## Add missing columns
 
 Currently, the fiddler crabs data is missing three variables:
 
@@ -104,7 +104,7 @@ ra_w_q1_01 <- dplyr::mutate(ra_w_q1, region = "Ria de Alvor", season = "winter",
 ra_w_q2_01 <- dplyr::mutate(ra_w_q2, region = "Ria de Alvor", season = "winter", quadrat = "q2")
 ```
 
-### Make variable (column) names consistent across data sets
+## Make variable (column) names consistent across data sets
 
 Okay, now that we have all variables in our data sets, we will need to bind all data sets into one. But before we do that we will need to make sure that the variables (i.e. columns) across the eight data sets are all named in the same way. Otherwise, the step of combining the data sets will be cumbersome. We want it to be smooth. You'll see in a bit what we mean.
 
@@ -173,7 +173,7 @@ ra_w_q1_02 <- dplyr::rename(ra_w_q1_01, carapace_width = cw, carapace_length = c
 ra_w_q2_02 <- dplyr::rename(ra_w_q2_01, carapace_width = cw, carapace_length = cl, left_claw_length = lcl, right_claw_length = rcl, front_width = fw, species = species_name, is_gravid = `is_gravid?`)
 ```
 
-### Combining the crabs data sets into one
+## Combining the crabs data sets into one
 
 Now we will combine all the eight data sets into one single data frame. To do that we use the function `dplyr::bind_rows()`. And although the columns are not by the same order in all data sets, `bind_rows()` is smart enough to match each column of one data set to that of another. It does this by using the column names. And that is why it was so important harmonise the column names across data sets.
 
@@ -205,7 +205,7 @@ Here is how the `crabs01` should look like:
 crabs01
 ```
 
-### Organising variables (columns)
+## Organising variables (columns)
 
 An important part of the tidying up process is getting the data in a format that is as intuitive as possible for us. With regards to the existing columns in the `crabs01` data set, there are two things we can further improve:
 
@@ -269,7 +269,7 @@ Here is how the `crabs02` data set should look like:
 dplyr::glimpse(crabs02)
 ```
 
-### Filling in fake missing values
+## Filling in fake missing values
 
 Now let us start looking into the values of variables, and try to spot strange patterns or weird values.
 
@@ -312,7 +312,7 @@ Use the function `tidyr::fill()` to fill in the values. Look at the documentatio
 crabs03 <- tidyr::fill(data = crabs02, latitude, longitude, .direction = "down")
 ```
 
-### Recode `NA` aliases
+## Recode `NA` aliases
 
 Sometimes the values used to represent missing values may take many different forms. Take a close look at the column `sex`, and check if there are any other values than `"female"` or `"male"`.
 
@@ -344,7 +344,7 @@ unique(crabs03$sex)
 unique(crabs04$sex)
 ```
 
-### General recoding of values
+## General recoding of values
 
 As it turns out, the differences between the data sets generated at Ria Formosa and at Ria de Alvor are not exhausted yet... It seems that the variables `species` and `stage` are also not agreeing between the two Rias. Let us use `dplyr::count()` to see that:
 
@@ -397,7 +397,7 @@ The new data set should now show:
 dplyr::count(crabs05, region, species, stage)
 ```
 
-### Fix scale of quantitative variables
+## Fix scale of quantitative variables
 
 The Ria de Alvor team recorded the morphological measurements in centimetres,
 whereas the Ria Formosa team recorded them in millimetres. We need to fix this.
@@ -436,7 +436,7 @@ summary(crabs05$carapace_width)
 summary(crabs06$carapace_width)
 ```
 
-### Ensure appropriate variable types
+## Ensure appropriate variable types
 
 Currently our data set `crabs06` has a range of variables whose type is
 `character`, i.e. the individual values are strings. Examples are: `region`,
@@ -486,7 +486,7 @@ crabs07 <-
   )
 ```
 
-### Column names are values, not variable names
+## Column names are values, not variable names
 
 Remember the `quadrats01` data set about the quadrats? It's time to update it
 too. Look at the column names, they're values! Also, the first column has an
@@ -533,7 +533,7 @@ quadrats03 <-
   )
 ```
 
-### Multiple observational unit types in one table
+## Multiple observational unit types in one table
 
 > Datasets often involve values collected at multiple levels, on different types
 of observational units. During tidying, each type of observational unit should
@@ -576,11 +576,28 @@ quadrats04
 crabs08
 ```
 
-### Wrapping up
+## Wrapping up
 
-Finally assign the last versions of our data sets into simpler names, and save
-them to disk. These will be the starting point of tomorrow's workflow about Data
-Visualisation with `{ggplot2}`.
+Finally we will give simple names to our two data sets and save them to disk to
+mark this milestone of Data Tidying. These exported files will be the starting
+point of tomorrow's workflow about Data Visualisation with `{ggplot2}`.
+
+### Exercise 2.13
+
+- Export the `quadrats` data frame to CSV (`data-tidy/quadrats.csv`)
+- Export the `crabs` data frame to CSV (`data-tidy/crabs.csv`)
+
+Although CSV files are a good way of storing our tidy data sets and of sharing
+it with collaborators, they do not store information about the variables
+(columns) types.
+
+So please export also to RDS format which is a special format that only R
+understands but that keeps the data exactly as we have it now, thus making it
+easier to read in this files and continue with our workflow about Data
+Visualisation tomorrow.
+
+- Export the `quadrats` data frame to RDS (`data-tidy/quadrats.rds`)
+- Export the `crabs` data frame to RDS (`data-tidy/crabs.rds`)
 
 ```{r}
 #| code-fold: true
@@ -599,7 +616,7 @@ saveRDS(quadrats, file = file.path(data_tidy_path, "quadrats.rds"))
 saveRDS(crabs, file = file.path(data_tidy_path, "crabs.rds"))
 ```
 
-### Data tidying script
+## Data tidying script
 
 Here is the entire script containing all code from the exercises present
 in section Raw Data and Data Tidying.
