@@ -4,6 +4,7 @@ project:
 
 website:
   title: "Tidy Data & Visualisation in R"
+  page-navigation: true
   navbar:
     left:
       - href: index.qmd
