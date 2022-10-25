@@ -207,7 +207,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#exercise-3.1" id="toc-exercise-3.1" class="nav-link" data-scroll-target="#exercise-3.1">Exercise 3.1</a></li>
   </ul></li>
-  <li><a href="#mapping-variables-to-aesthetics-aes" id="toc-mapping-variables-to-aesthetics-aes" class="nav-link" data-scroll-target="#mapping-variables-to-aesthetics-aes">Mapping variables to aesthetics (aes)</a></li>
+  <li><a href="#mapping-variables-to-aesthetics-aes" id="toc-mapping-variables-to-aesthetics-aes" class="nav-link" data-scroll-target="#mapping-variables-to-aesthetics-aes">Mapping variables to aesthetics (aes)</a>
+  <ul class="collapse">
+  <li><a href="#exercise-3.2" id="toc-exercise-3.2" class="nav-link" data-scroll-target="#exercise-3.2">Exercise 3.2</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -266,8 +269,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="mapping-variables-to-aesthetics-aes" class="level2">
 <h2 class="anchored" data-anchor-id="mapping-variables-to-aesthetics-aes">Mapping variables to aesthetics (aes)</h2>
+<p>The basic recipe for creating a <code>{ggplot2}</code> plot:</p>
+<ol type="1">
+<li>You provide the data (typically a tidy data set).</li>
+<li>You indicate how to map variables to aesthetics.</li>
+<li>You indicate what graphical primitives to use (<code>geom_*</code>).</li>
+</ol>
+<p>And ggplot does the rest for you. We will now explore these three steps while trying to answer some basic questions about the fiddler crabs.</p>
+<section id="exercise-3.2" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-3.2">Exercise 3.2</h3>
+<p>What is the most abundant crab species?</p>
+<p>Use <code>dplyr::count()</code> to determine the number of crabs identified in each species. The result should look like:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  species               n
+  &lt;fct&gt;             &lt;int&gt;
+1 Afruca farensis    2520
+2 Uca olhanensis     3740
+3 Ucides alvorensis  1066</code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Solution to Exercise 3.2</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>nr_crabs_by_species <span class="ot">&lt;-</span> <span class="fu">count</span>(crabs, species)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> nr_crabs_by_species, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="data_visualisation_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

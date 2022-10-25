@@ -172,6 +172,6 @@
     "href": "data_visualisation.html#mapping-variables-to-aesthetics-aes",
     "title": "Data visualisation",
     "section": "Mapping variables to aesthetics (aes)",
-    "text": "Mapping variables to aesthetics (aes)"
+    "text": "Mapping variables to aesthetics (aes)\nThe basic recipe for creating a {ggplot2} plot:\n\nYou provide the data (typically a tidy data set).\nYou indicate how to map variables to aesthetics.\nYou indicate what graphical primitives to use (geom_*).\n\nAnd ggplot does the rest for you. We will now explore these three steps while trying to answer some basic questions about the fiddler crabs.\n\nExercise 3.2\nWhat is the most abundant crab species?\nUse dplyr::count() to determine the number of crabs identified in each species. The result should look like:\n\n\n# A tibble: 3 × 2\n  species               n\n  <fct>             <int>\n1 Afruca farensis    2520\n2 Uca olhanensis     3740\n3 Ucides alvorensis  1066\n\n\n\n\nSolution to Exercise 3.2\nnr_crabs_by_species <- count(crabs, species)\nggplot(data = nr_crabs_by_species, mapping = aes(x = species, y = n)) +\n  geom_col()"
   }
 ]

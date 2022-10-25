@@ -43,4 +43,33 @@ crabs <- readRDS(file = file.path(data_tidy_path, "crabs.rds"))
 
 ## Mapping variables to aesthetics (aes)
 
-Working on it!
+The basic recipe for creating a `{ggplot2}` plot:
+
+1. You provide the data (typically a tidy data set).
+2. You indicate how to map variables to aesthetics.
+3. You indicate what graphical primitives to use (`geom_*`).
+
+And ggplot does the rest for you. We will now explore these three steps
+while trying to answer some basic questions about the fiddler crabs.
+
+### Exercise 3.2
+What is the most abundant crab species? Make a simple bar chart showing the
+number of individuals per species.
+
+Use `dplyr::count()` to determine the number of crabs identified in each
+species. The result should look like:
+
+```{r}
+#| echo: false
+count(crabs, species)
+```
+
+
+```{r}
+#| code-fold: true
+#| code-summary: "Solution to Exercise 3.2"
+nr_crabs_by_species <- count(crabs, species)
+ggplot(data = nr_crabs_by_species, mapping = aes(x = species, y = n)) +
+  geom_col()
+```
+
