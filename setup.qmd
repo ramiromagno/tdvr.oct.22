@@ -4,7 +4,7 @@ title: "Setup"
 
 - Make sure you have R and RStudio installed.
 - Create an RStudio project in a new directory named `tdvr`.
-- Create three directories within `tdvr/`:
+- Create the following directories within `tdvr/`:
   - `data-raw/`.
   - `data-tidy/`
   - `R/`.
