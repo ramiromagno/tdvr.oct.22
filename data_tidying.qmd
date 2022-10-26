@@ -33,7 +33,14 @@ We will now embark on a series of data transformations to convert our nine data 
 -   `crabs`
 -   `quadrats`
 
-So bear these two data sets in mind as these are our end goal for the Data Tidying workflow of today.
+So bear these two data sets in mind as these are our end goal for the Data
+Tidying workflow of today. As we proceed transforming our data frames we will
+keep variables that hold the intermediate steps. For example, early on in our
+workflow today, we will have a `crabs01` data set. This is a messy data set.
+Then you will transform it a bit into `crabs02`, etc.. At the very end we will
+assign the last stage of our crabs data set to the variable `crabs`. The same
+pattern will be followed for `quadrats`, although this data set involves fewer
+steps.
 
 From the previous section Raw Data you should have generated these nine data sets that are now our starting point:
 
@@ -49,6 +56,9 @@ From the previous section Raw Data you should have generated these nine data set
     -   `ra_w_q2`
 -   Quadrats
     -   `quadrats01`
+
+Okay, so now we are ready to start fixing the various aspects of messiness 
+associated with our data sets.
 
 ## Add missing columns
 
@@ -511,8 +521,8 @@ them.
 #| code-summary: "Solution to Exercise 2.10"
 quadrats02 <-
   quadrats01 %>%
-  dplyr::select(-1) |>
-  tidyr::pivot_longer(cols = everything(), names_to = "region_quadrat", values_to = "area") |>
+  dplyr::select(-1) %>%
+  tidyr::pivot_longer(cols = everything(), names_to = "region_quadrat", values_to = "area") %>%
   tidyr::separate(col = "region_quadrat", into = c("region", "quadrat"), sep = "-")
 ```
 
@@ -805,8 +815,8 @@ crabs07 <-
 # EXERCISE 2.10
 quadrats02 <-
   quadrats01 %>%
-  dplyr::select(-1) |>
-  tidyr::pivot_longer(cols = everything(), names_to = "region_quadrat", values_to = "area") |>
+  dplyr::select(-1) %>%
+  tidyr::pivot_longer(cols = everything(), names_to = "region_quadrat", values_to = "area") %>%
   tidyr::separate(col = "region_quadrat", into = c("region", "quadrat"), sep = "-")
 
 # EXERCISE 2.11

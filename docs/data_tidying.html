@@ -286,7 +286,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>crabs</code></li>
 <li><code>quadrats</code></li>
 </ul>
-<p>So bear these two data sets in mind as these are our end goal for the Data Tidying workflow of today.</p>
+<p>So bear these two data sets in mind as these are our end goal for the Data Tidying workflow of today. As we proceed transforming our data frames we will keep variables that hold the intermediate steps. For example, early on in our workflow today, we will have a <code>crabs01</code> data set. This is a messy data set. Then you will transform it a bit into <code>crabs02</code>, etc.. At the very end we will assign the last stage of our crabs data set to the variable <code>crabs</code>. The same pattern will be followed for <code>quadrats</code>, although this data set involves fewer steps.</p>
 <p>From the previous section Raw Data you should have generated these nine data sets that are now our starting point:</p>
 <ul>
 <li>Ria Formosa
@@ -308,6 +308,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>quadrats01</code></li>
 </ul></li>
 </ul>
+<p>Okay, so now we are ready to start fixing the various aspects of messiness associated with our data sets.</p>
 </section>
 <section id="add-missing-columns" class="level2">
 <h2 class="anchored" data-anchor-id="add-missing-columns">Add missing columns</h2>
@@ -959,8 +960,8 @@ $ right_claw_length &lt;dbl&gt; 10, 15, 5, 14, 7, 6, 9, 5, 10, 12, 13, 15, 11, 1
 <summary>Solution to Exercise 2.10</summary>
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>quadrats02 <span class="ot">&lt;-</span></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  quadrats01 <span class="sc">%&gt;%</span></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"region_quadrat"</span>, <span class="at">values_to =</span> <span class="st">"area"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"region_quadrat"</span>, <span class="at">values_to =</span> <span class="st">"area"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">separate</span>(<span class="at">col =</span> <span class="st">"region_quadrat"</span>, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"region"</span>, <span class="st">"quadrat"</span>), <span class="at">sep =</span> <span class="st">"-"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
@@ -1254,8 +1255,8 @@ $ right_claw_length &lt;dbl&gt; 10, 15, 5, 14, 7, 6, 9, 5, 10, 12, 13, 15, 11, 1
 <span id="cb46-177"><a href="#cb46-177" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.10</span></span>
 <span id="cb46-178"><a href="#cb46-178" aria-hidden="true" tabindex="-1"></a>quadrats02 <span class="ot">&lt;-</span></span>
 <span id="cb46-179"><a href="#cb46-179" aria-hidden="true" tabindex="-1"></a>  quadrats01 <span class="sc">%&gt;%</span></span>
-<span id="cb46-180"><a href="#cb46-180" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb46-181"><a href="#cb46-181" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"region_quadrat"</span>, <span class="at">values_to =</span> <span class="st">"area"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb46-180"><a href="#cb46-180" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb46-181"><a href="#cb46-181" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"region_quadrat"</span>, <span class="at">values_to =</span> <span class="st">"area"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb46-182"><a href="#cb46-182" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">separate</span>(<span class="at">col =</span> <span class="st">"region_quadrat"</span>, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"region"</span>, <span class="st">"quadrat"</span>), <span class="at">sep =</span> <span class="st">"-"</span>)</span>
 <span id="cb46-183"><a href="#cb46-183" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb46-184"><a href="#cb46-184" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.11</span></span>

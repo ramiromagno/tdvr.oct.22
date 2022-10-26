@@ -237,3 +237,20 @@ ggplot(data = count(crabs, species, sex, stage), mapping = aes(x = sex, y = n, f
   geom_col(position = position_dodge2(preserve = "single")) +
   facet_wrap(vars(species))
 ```
+Hooray! Four variables shown in not such a complicated way. But we can do
+better...
+
+### Exercise 3.7
+
+Let us draw five variables: `species`, `sex`, `stage`, `season` and `n`.
+We can use faceting in 2D: rows and columns. Take a look at the solution
+below.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Solution to Exercise 3.7"
+count(crabs, species, sex, stage, season) %>%
+ggplot(mapping = aes(x = sex, y = n, fill = stage)) +
+  geom_col(position = position_dodge2(preserve = "single")) +
+  facet_grid(rows = vars(season), cols = vars(species))
+```

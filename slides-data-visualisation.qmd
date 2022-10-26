@@ -1,0 +1,7 @@
+---
+title: "Data Visualisation (Day 2)"
+author: "Ramiro Magno"
+format: revealjs
+---
+
+Coming soon.

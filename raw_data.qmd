@@ -62,7 +62,7 @@ data sets from Ria Formosa (CSV files) and Ria de Alvor (`Ria de Alvor.xlsx`)?
 
 ### Exercise 1.1
 
-Collect the previous commands into your R script.
+Collect the previous commands into your R script `data-tidying.R`.
 
 ```{r}
 #| eval: false
@@ -103,7 +103,8 @@ quadrats01 <- readxl::read_excel(file.path(data_raw_path, "quadrats.xlsx"))
 
 ### Exercise 1.2
 
-Following those examples can you read all six files into R?
+Following those examples can you read all six files into R? Note that
+`Ria de Alvor.xlsx` will be trickier because it contains several sheets.
 
 ```{r}
 #| code-fold: true
@@ -158,7 +159,8 @@ table(rf_s_q1$stage)
 unique(rf_s_q1$sex)
 ```
 
-Write down as comments the insights you gained about the data:
+Write down as comments in your script file `data-tidying.R` the insights you
+gained about the data:
 
 ```{r}
 #| code-fold: true
@@ -167,7 +169,7 @@ Write down as comments the insights you gained about the data:
 
 # Insights gained:
 # - `region` and `season` are missing variables from the data sets pertaining
-#   Ria Formosa. They are implictly indicated in the name of the CSV files. The "rf" and
+#   Ria Formosa. They are implicitly indicated in the name of the CSV files. The "rf" and
 #   the "s" or "w", meant "summer" and "winter, respectively. So we will need
 #   to add these two variables to `rf_s_q1`, `rf_s_q2`, `rf_w_q1` and `rf_w_q2`.
 # - TODO: To be completed!!

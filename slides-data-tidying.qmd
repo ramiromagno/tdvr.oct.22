@@ -1,0 +1,109 @@
+---
+title: "Data Tidying"
+author: "Ramiro Magno"
+format:
+  revealjs:
+    footer: "Tidy Data and Visualisation in R, 2022"
+    theme: simple
+---
+
+## Team
+
+## Programme
+
+-   Day 1 -- Data tidying
+-   Day 2 -- Data visualisation
+-   Day 3 -- Consulting
+
+
+Mornings @ 09h00--12h00
+
+Afternoons @ 14h00--17h00 (+1h)
+
+## What is data?
+
+::: {.absolute top="30%" left="5%"}
+::: {style="font-size: 1.2em; text-align: left"}
+"Data are values of qualitative or quantitative variables, belonging to a set of items."
+:::
+:::
+
+## Key concepts behind data
+
+::: {.absolute top="20%" left="5%"}
+-   Values
+-   Variables
+-   Items
+:::
+
+##
+
+::: {style="font-size: 1.5em; text-align: center"}
+|              | Female | Male |
+|--------------|--------|------|
+| Pregnant     | 10     | 0    |
+| Not pregnant | 42     | 38   |
+:::
+
+## 
+
+::: {style="font-size: 1.5em; text-align: center"}
+|        | Pregnant | Not pregnant |
+|--------|----------|--------------|
+| Female | 10       | 42           |
+| Male   | 0        | 38           |
+:::
+
+## 
+
+::: {style="font-size: 1.5em; text-align: center"}
+| Sex    | Pregnancy status | n   |
+|--------|------------------|-----|
+| Female | Not pregnant     | 42  |
+| Female | Pregnant         | 10  |
+| Male   | Not pregnant     | 38  |
+| Male   | Pregnant         | 0   |
+:::
+
+## Data structure heterogeneity
+
+![](gfx/image28060.png)
+
+## Tidy data
+
+![](gfx/tidydata_2.jpg)
+
+##
+
+![](gfx/tidydata_1.jpg)
+
+## Tidy data principles
+
+![](gfx/tidy-1.png)
+
+## Tidy data workbench
+
+![](gfx/tidydata_3.jpg)
+
+## Data analysis workflow
+
+![](gfx/r4ds_data-science.png)
+
+## Tidyverse workflow
+
+![](gfx/tidyverse-package-workflow.png)
+
+## Fiddler crabs
+
+![](gfx/logo-Fiddler-crab.jpg)
+
+## Location
+
+![](gfx/snap.png)
+
+## Experimental design
+
+- At two locations: Ria Formosa e Ria de Alvor
+- In the Summer and in the Winter
+- Two quadrats
+- Variables? You will find out.
