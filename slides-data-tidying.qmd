@@ -3,11 +3,13 @@ title: "Data Tidying"
 author: "Ramiro Magno"
 format:
   revealjs:
-    footer: "Tidy Data and Visualisation in R, 2022"
+    footer: "Tidy Data and Visualisation with R, 2022"
     theme: simple
 ---
 
 ## Team
+
+![](gfx/drawing-6.png)
 
 ## Programme
 
@@ -103,7 +105,11 @@ Afternoons @ 14h00--17h00 (+1h)
 
 ## Experimental design
 
-- At two locations: Ria Formosa e Ria de Alvor
+- At two locations: Ria Formosa and Ria de Alvor
 - In the Summer and in the Winter
 - Two quadrats
 - Variables? You will find out.
+
+## Online tutorial
+
+[rmagno.eu/tdvr.oct.22](https://rmagno.eu/tdvr.oct.22/)

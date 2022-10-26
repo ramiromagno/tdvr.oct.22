@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "Tidy Data & Visualisation in R"
+  title: "Tidy Data & Visualisation with R"
   page-navigation: true
   page-footer: "Copyright 2022, Ramiro Magno & Isabel Duarte" 
   navbar:

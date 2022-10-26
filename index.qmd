@@ -1,9 +1,9 @@
 ---
-title: "Tidy Data & Visualisation in R"
+title: "Tidy Data & Visualisation with R"
 subtitle: "CCMAR, Oct 26--28, 2022"
 ---
 
-This website provides the materials for the course [Tidy Data & Visualisation in
+This website provides the materials for the course [Tidy Data & Visualisation with
 R](https://www.ccmar.ualg.pt/advanced-tech-training/tidy-data-visualisation-r)
 held at CCMAR, University of Algarve.
 
