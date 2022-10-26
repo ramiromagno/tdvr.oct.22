@@ -33,14 +33,7 @@ We will now embark on a series of data transformations to convert our nine data 
 -   `crabs`
 -   `quadrats`
 
-So bear these two data sets in mind as these are our end goal for the Data
-Tidying workflow of today. As we proceed transforming our data frames we will
-keep variables that hold the intermediate steps. For example, early on in our
-workflow today, we will have a `crabs01` data set. This is a messy data set.
-Then you will transform it a bit into `crabs02`, etc.. At the very end we will
-assign the last stage of our crabs data set to the variable `crabs`. The same
-pattern will be followed for `quadrats`, although this data set involves fewer
-steps.
+So bear these two data sets in mind as these are our end goal for the Data Tidying workflow of today. As we proceed transforming our data frames we will keep variables that hold the intermediate steps. For example, early on in our workflow today, we will have a `crabs01` data set. This is a messy data set. Then you will transform it a bit into `crabs02`, etc.. At the very end we will assign the last stage of our crabs data set to the variable `crabs`. The same pattern will be followed for `quadrats`, although this data set involves fewer steps.
 
 From the previous section Raw Data you should have generated these nine data sets that are now our starting point:
 
@@ -57,8 +50,7 @@ From the previous section Raw Data you should have generated these nine data set
 -   Quadrats
     -   `quadrats01`
 
-Okay, so now we are ready to start fixing the various aspects of messiness 
-associated with our data sets.
+Okay, so now we are ready to start fixing the various aspects of messiness associated with our data sets.
 
 ## Add missing columns
 
@@ -123,7 +115,7 @@ We can tell you that there are discrepancies between the data sets coming from R
 Also, the two teams had abbreviated the name of the morphological variables, and we find them hard to read, so we will rename them to new names as indicated in this table:
 
 | Current name | New name            | Meaning                                            |
-|------------------|------------------|------------------------------------|
+|------------------|------------------|-----------------------------------|
 | `cw`         | `carapace_width`    | Carapace width                                     |
 | `cl`         | `carapace_length`   | Carapace length                                    |
 | `fw`         | `front_width`       | Front width (distance between the crab eye stalks) |
@@ -409,14 +401,11 @@ dplyr::count(crabs05, region, species, stage)
 
 ## Fix scale of quantitative variables
 
-The Ria de Alvor team recorded the morphological measurements in centimetres,
-whereas the Ria Formosa team recorded them in millimetres. We need to fix this.
+The Ria de Alvor team recorded the morphological measurements in centimetres, whereas the Ria Formosa team recorded them in millimetres. We need to fix this.
 
 ### Exercise 2.8
 
-Multiply the values of the morphological variables of Ria de Alvor by 10 to
-transform from centimetres to millimetres, and hence harmonise them with
-Ria Formosa's values.
+Multiply the values of the morphological variables of Ria de Alvor by 10 to transform from centimetres to millimetres, and hence harmonise them with Ria Formosa's values.
 
 ```{r}
 #| code-fold: true
@@ -433,8 +422,7 @@ crabs06 <-
   )
 ```
 
-Compare the summary statistics before and after the transformation. Here is
-an example with `carapace_width`:
+Compare the summary statistics before and after the transformation. Here is an example with `carapace_width`:
 
 ```{r}
 # Before multiplication by 10
@@ -448,37 +436,24 @@ summary(crabs06$carapace_width)
 
 ## Ensure appropriate variable types
 
-Currently our data set `crabs06` has a range of variables whose type is
-`character`, i.e. the individual values are strings. Examples are: `region`,
-`species`, `stage`, etc.. These are essentially nominal (or categorical), or
-ordered categorical (or ordinal) variables. In R these variable types are called
-`factor`s.
+Currently our data set `crabs06` has a range of variables whose type is `character`, i.e. the individual values are strings. Examples are: `region`, `species`, `stage`, etc.. These are essentially nominal (or categorical), or ordered categorical (or ordinal) variables. In R these variable types are called `factor`s.
 
-Although it is possible to leave these variables as the `character` type, 
-converting to factors has a few advantages:
+Although it is possible to leave these variables as the `character` type, converting to factors has a few advantages:
 
-- Memory efficiency: `factor`s take up less space than `character` variables,
-because they are effectively stored as integers.
-- Factors are useful when you know the set of possible values but they're not
-all present in a given data set. In contrast to a character vector, when you
-tabulate a factor you'll get counts of all categories, even unobserved ones.
+-   Memory efficiency: `factor`s take up less space than `character` variables, because they are effectively stored as integers.
+-   Factors are useful when you know the set of possible values but they're not all present in a given data set. In contrast to a character vector, when you tabulate a factor you'll get counts of all categories, even unobserved ones.
 
 ### Exercise 2.9
 
-Use a combination of `dplyr::mutate()` and `factor()` to convert the following
-variables to factors:
+Use a combination of `dplyr::mutate()` and `factor()` to convert the following variables to factors:
 
-- `region`
-- `season`
-- `species`
-- `sex`
-- `stage`
+-   `region`
+-   `season`
+-   `species`
+-   `sex`
+-   `stage`
 
-Also, and because we do not have an integer variable in our `crabs06` data set,
-make the quadrat an integer (for illustrative purposes). Tip: use `as.integer()`
-for that.
-
-
+Also, and because we do not have an integer variable in our `crabs06` data set, make the quadrat an integer (for illustrative purposes). Tip: use `as.integer()` for that.
 
 ```{r}
 #| code-fold: true
@@ -498,22 +473,17 @@ crabs07 <-
 
 ## Column names are values, not variable names
 
-Remember the `quadrats01` data set about the quadrats? It's time to update it
-too. Look at the column names, they're values! Also, the first column has an
-automatic name `...1` because originally in the Excel file it was empty.
+Remember the `quadrats01` data set about the quadrats? It's time to update it too. Look at the column names, they're values! Also, the first column has an automatic name `...1` because originally in the Excel file it was empty.
 
 ```{r}
 quadrats01
 ```
 
-To fix this data set we will use two fancy functions that we haven't used yet:
-`tidyr::pivot_longer()` and `tidyr::separate()`.
+To fix this data set we will use two fancy functions that we haven't used yet: `tidyr::pivot_longer()` and `tidyr::separate()`.
 
 ### Exercise 2.10
 
-Convert the `quadrats01` data set into a tidy data set by moving the values
-in the column names to table elements, and create new columns to accomodate
-them.
+Convert the `quadrats01` data set into a tidy data set by moving the values in the column names to table elements, and create new columns to accomodate them.
 
 ```{r}
 #| code-fold: true
@@ -528,8 +498,7 @@ quadrats02 <-
 
 ### Exercise 2.11
 
-And just like we did before, convert the `region` variable to factor and
-`quadrat` to integer and save the result to `quadrats03`.
+And just like we did before, convert the `region` variable to factor and `quadrat` to integer and save the result to `quadrats03`.
 
 ```{r}
 #| code-fold: true
@@ -545,23 +514,13 @@ quadrats03 <-
 
 ## Multiple observational unit types in one table
 
-> Datasets often involve values collected at multiple levels, on different types
-of observational units. During tidying, each type of observational unit should
-be stored in its own table. This is closely related to the idea of database
-normalisation, where each fact is expressed in only one place. It’s important
-because otherwise inconsistencies can arise. 
-[From `{tidyr}`vignette on multiple types](https://tidyr.tidyverse.org/articles/tidy-data.html#multiple-types)
+> Datasets often involve values collected at multiple levels, on different types of observational units. During tidying, each type of observational unit should be stored in its own table. This is closely related to the idea of database normalisation, where each fact is expressed in only one place. It's important because otherwise inconsistencies can arise. [From `{tidyr}`vignette on multiple types](https://tidyr.tidyverse.org/articles/tidy-data.html#multiple-types)
 
-There are two variables (columns) in our `crabs07` data set that characterise
-the quadrats, not the crabs individually. These are `latitude` and `longitude`.
-Yet, they've been recorded in the crabs data sets but belong in the quadrats
-data set.
+There are two variables (columns) in our `crabs07` data set that characterise the quadrats, not the crabs individually. These are `latitude` and `longitude`. Yet, they've been recorded in the crabs data sets but belong in the quadrats data set.
 
 ### Exercise 2.12
 
-To fix this, we will need to get the unique latitude and longitude values for
-each quadrat. There is a nifty function that allow us to that:
-`dplyr::distinct()`. And combined with `dplyr::left_join()` will get us there...
+To fix this, we will need to get the unique latitude and longitude values for each quadrat. There is a nifty function that allow us to that: `dplyr::distinct()`. And combined with `dplyr::left_join()` will get us there...
 
 ```{r}
 #| code-fold: true
@@ -581,33 +540,25 @@ Here's how it should like:
 quadrats04
 ```
 
-
 ```{r}
 crabs08
 ```
 
 ## Wrapping up
 
-Finally we will give simple names to our two data sets and save them to disk to
-mark this milestone of Data Tidying. These exported files will be the starting
-point of tomorrow's workflow about Data Visualisation with `{ggplot2}`.
+Finally we will give simple names to our two data sets and save them to disk to mark this milestone of Data Tidying. These exported files will be the starting point of tomorrow's workflow about Data Visualisation with `{ggplot2}`.
 
 ### Exercise 2.13
 
-- Export the `quadrats` data frame to CSV (`data-tidy/quadrats.csv`)
-- Export the `crabs` data frame to CSV (`data-tidy/crabs.csv`)
+-   Export the `quadrats` data frame to CSV (`data-tidy/quadrats.csv`)
+-   Export the `crabs` data frame to CSV (`data-tidy/crabs.csv`)
 
-Although CSV files are a good way of storing our tidy data sets and of sharing
-it with collaborators, they do not store information about the variables
-(columns) types.
+Although CSV files are a good way of storing our tidy data sets and of sharing it with collaborators, they do not store information about the variables (columns) types.
 
-So please export also to RDS format which is a special format that only R
-understands but that keeps the data exactly as we have it now, thus making it
-easier to read in this files and continue with our workflow about Data
-Visualisation tomorrow.
+So please export also to RDS format which is a special format that only R understands but that keeps the data exactly as we have it now, thus making it easier to read in this files and continue with our workflow about Data Visualisation tomorrow.
 
-- Export the `quadrats` data frame to RDS (`data-tidy/quadrats.rds`)
-- Export the `crabs` data frame to RDS (`data-tidy/crabs.rds`)
+-   Export the `quadrats` data frame to RDS (`data-tidy/quadrats.rds`)
+-   Export the `crabs` data frame to RDS (`data-tidy/crabs.rds`)
 
 ```{r}
 #| code-fold: true
@@ -628,8 +579,7 @@ saveRDS(crabs, file = file.path(data_tidy_path, "crabs.rds"))
 
 ## Data tidying script
 
-Here is the entire script containing all code from the exercises present
-in section Raw Data and Data Tidying.
+Here is the entire script containing all code from the exercises present in section Raw Data and Data Tidying.
 
 ```{r}
 #| eval: false
@@ -667,12 +617,7 @@ ra_w_q2 <- readxl::read_excel(ra_path, sheet = "winter-q2")
 # Finally, reading the details about the quadrats
 quadrats01 <- readxl::read_excel(file.path(data_raw_path, "quadrats.xlsx"))
 
-# Insights gained:
-# - `region` and `season` are missing variables from the data sets pertaining
-#   Ria Formosa. They are implictly indicated in the name of the CSV files. The "rf" and
-#   the "s" or "w", meant "summer" and "winter, respectively. So we will need
-#   to add these two variables to `rf_s_q1`, `rf_s_q2`, `rf_w_q1` and `rf_w_q2`.
-# - TODO: To be completed!!
+# Insights gained: to be discussed with trainers.
 
 
 

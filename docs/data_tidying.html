@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.514">
+<meta name="generator" content="quarto-1.1.251">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,10 +11,15 @@
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -53,7 +58,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -66,7 +71,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -98,7 +103,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -129,9 +134,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
-      <a class="navbar-brand" href="./index.html">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Tidy Data &amp; Visualisation with R</span>
-  </a>
+    </a>
+  </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
@@ -199,7 +206,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc">
+        <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
@@ -395,7 +402,7 @@ $ quadrat   &lt;chr&gt; "q1", "q1", "q1", "q1", "q1", "q1", "q1", "q1", "q1", "q
 <colgroup>
 <col style="width: 25%">
 <col style="width: 25%">
-<col style="width: 50%">
+<col style="width: 49%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1107,186 +1114,181 @@ $ right_claw_length &lt;dbl&gt; 10, 15, 5, 14, 7, 6, 9, 5, 10, 12, 13, 15, 11, 1
 <span id="cb46-29"><a href="#cb46-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Finally, reading the details about the quadrats</span></span>
 <span id="cb46-30"><a href="#cb46-30" aria-hidden="true" tabindex="-1"></a>quadrats01 <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="fu">file.path</span>(data_raw_path, <span class="st">"quadrats.xlsx"</span>))</span>
 <span id="cb46-31"><a href="#cb46-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-32"><a href="#cb46-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Insights gained:</span></span>
-<span id="cb46-33"><a href="#cb46-33" aria-hidden="true" tabindex="-1"></a><span class="co"># - `region` and `season` are missing variables from the data sets pertaining</span></span>
-<span id="cb46-34"><a href="#cb46-34" aria-hidden="true" tabindex="-1"></a><span class="co">#   Ria Formosa. They are implictly indicated in the name of the CSV files. The "rf" and</span></span>
-<span id="cb46-35"><a href="#cb46-35" aria-hidden="true" tabindex="-1"></a><span class="co">#   the "s" or "w", meant "summer" and "winter, respectively. So we will need</span></span>
-<span id="cb46-36"><a href="#cb46-36" aria-hidden="true" tabindex="-1"></a><span class="co">#   to add these two variables to `rf_s_q1`, `rf_s_q2`, `rf_w_q1` and `rf_w_q2`.</span></span>
-<span id="cb46-37"><a href="#cb46-37" aria-hidden="true" tabindex="-1"></a><span class="co"># - </span><span class="al">TODO</span><span class="co">: To be completed!!</span></span>
-<span id="cb46-38"><a href="#cb46-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-32"><a href="#cb46-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Insights gained: to be discussed with trainers.</span></span>
+<span id="cb46-33"><a href="#cb46-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-34"><a href="#cb46-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-35"><a href="#cb46-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-36"><a href="#cb46-36" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb46-37"><a href="#cb46-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Data Tidying</span></span>
+<span id="cb46-38"><a href="#cb46-38" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
 <span id="cb46-39"><a href="#cb46-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-40"><a href="#cb46-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-41"><a href="#cb46-41" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb46-42"><a href="#cb46-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Data Tidying</span></span>
-<span id="cb46-43"><a href="#cb46-43" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb46-44"><a href="#cb46-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-45"><a href="#cb46-45" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.1</span></span>
-<span id="cb46-46"><a href="#cb46-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Ria Formosa data sets</span></span>
-<span id="cb46-47"><a href="#cb46-47" aria-hidden="true" tabindex="-1"></a>rf_s_q1_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(rf_s_q1, <span class="at">region =</span> <span class="st">"Ria Formosa"</span>, <span class="at">season =</span> <span class="st">"summer"</span>, <span class="at">quadrat =</span> <span class="st">"q1"</span>)</span>
-<span id="cb46-48"><a href="#cb46-48" aria-hidden="true" tabindex="-1"></a>rf_s_q2_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(rf_s_q2, <span class="at">region =</span> <span class="st">"Ria Formosa"</span>, <span class="at">season =</span> <span class="st">"summer"</span>, <span class="at">quadrat =</span> <span class="st">"q2"</span>)</span>
-<span id="cb46-49"><a href="#cb46-49" aria-hidden="true" tabindex="-1"></a>rf_w_q1_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(rf_w_q1, <span class="at">region =</span> <span class="st">"Ria Formosa"</span>, <span class="at">season =</span> <span class="st">"winter"</span>, <span class="at">quadrat =</span> <span class="st">"q1"</span>)</span>
-<span id="cb46-50"><a href="#cb46-50" aria-hidden="true" tabindex="-1"></a>rf_w_q2_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(rf_w_q2, <span class="at">region =</span> <span class="st">"Ria Formosa"</span>, <span class="at">season =</span> <span class="st">"winter"</span>, <span class="at">quadrat =</span> <span class="st">"q2"</span>)</span>
-<span id="cb46-51"><a href="#cb46-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-52"><a href="#cb46-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Ria de Alvor data sets</span></span>
-<span id="cb46-53"><a href="#cb46-53" aria-hidden="true" tabindex="-1"></a>ra_s_q1_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(ra_s_q1, <span class="at">region =</span> <span class="st">"Ria de Alvor"</span>, <span class="at">season =</span> <span class="st">"summer"</span>, <span class="at">quadrat =</span> <span class="st">"q1"</span>)</span>
-<span id="cb46-54"><a href="#cb46-54" aria-hidden="true" tabindex="-1"></a>ra_s_q2_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(ra_s_q2, <span class="at">region =</span> <span class="st">"Ria de Alvor"</span>, <span class="at">season =</span> <span class="st">"summer"</span>, <span class="at">quadrat =</span> <span class="st">"q2"</span>)</span>
-<span id="cb46-55"><a href="#cb46-55" aria-hidden="true" tabindex="-1"></a>ra_w_q1_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(ra_w_q1, <span class="at">region =</span> <span class="st">"Ria de Alvor"</span>, <span class="at">season =</span> <span class="st">"winter"</span>, <span class="at">quadrat =</span> <span class="st">"q1"</span>)</span>
-<span id="cb46-56"><a href="#cb46-56" aria-hidden="true" tabindex="-1"></a>ra_w_q2_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(ra_w_q2, <span class="at">region =</span> <span class="st">"Ria de Alvor"</span>, <span class="at">season =</span> <span class="st">"winter"</span>, <span class="at">quadrat =</span> <span class="st">"q2"</span>)</span>
-<span id="cb46-57"><a href="#cb46-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-58"><a href="#cb46-58" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.2</span></span>
-<span id="cb46-59"><a href="#cb46-59" aria-hidden="true" tabindex="-1"></a><span class="co"># What column names are there in Ria de Alvor and not in Ria Formosa?</span></span>
-<span id="cb46-60"><a href="#cb46-60" aria-hidden="true" tabindex="-1"></a><span class="fu">setdiff</span>(<span class="fu">colnames</span>(ra_s_q1_01), <span class="fu">colnames</span>(rf_s_q1_01))</span>
-<span id="cb46-61"><a href="#cb46-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-62"><a href="#cb46-62" aria-hidden="true" tabindex="-1"></a><span class="co"># And now the reverse question.</span></span>
-<span id="cb46-63"><a href="#cb46-63" aria-hidden="true" tabindex="-1"></a><span class="fu">setdiff</span>(<span class="fu">colnames</span>(rf_s_q1_01), <span class="fu">colnames</span>(ra_s_q1_01))</span>
-<span id="cb46-64"><a href="#cb46-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-65"><a href="#cb46-65" aria-hidden="true" tabindex="-1"></a><span class="co"># So it seems Ria de Alvor data sets have named the `species` column as</span></span>
-<span id="cb46-66"><a href="#cb46-66" aria-hidden="true" tabindex="-1"></a><span class="co"># `species_name`, and `is_gravid?` contains a question mark. </span></span>
-<span id="cb46-67"><a href="#cb46-67" aria-hidden="true" tabindex="-1"></a><span class="co"># Let us fix by mapping:</span></span>
-<span id="cb46-68"><a href="#cb46-68" aria-hidden="true" tabindex="-1"></a><span class="co">#  - `species_name` to `species`</span></span>
-<span id="cb46-69"><a href="#cb46-69" aria-hidden="true" tabindex="-1"></a><span class="co">#  - `is_gravid?` to `is_gravid`</span></span>
-<span id="cb46-70"><a href="#cb46-70" aria-hidden="true" tabindex="-1"></a><span class="co"># And also, do not forget to map the abbreviated column names to their full</span></span>
-<span id="cb46-71"><a href="#cb46-71" aria-hidden="true" tabindex="-1"></a><span class="co"># names.</span></span>
-<span id="cb46-72"><a href="#cb46-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-73"><a href="#cb46-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-74"><a href="#cb46-74" aria-hidden="true" tabindex="-1"></a><span class="co"># Note how the mapping of the names is indicated in `rename()`:</span></span>
-<span id="cb46-75"><a href="#cb46-75" aria-hidden="true" tabindex="-1"></a><span class="co"># New names go in the left hand side of the equal sign and old names in</span></span>
-<span id="cb46-76"><a href="#cb46-76" aria-hidden="true" tabindex="-1"></a><span class="co"># the right hand side.</span></span>
-<span id="cb46-77"><a href="#cb46-77" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb46-78"><a href="#cb46-78" aria-hidden="true" tabindex="-1"></a><span class="co"># Ria Formosa data sets</span></span>
-<span id="cb46-79"><a href="#cb46-79" aria-hidden="true" tabindex="-1"></a>rf_s_q1_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(rf_s_q1_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw)</span>
-<span id="cb46-80"><a href="#cb46-80" aria-hidden="true" tabindex="-1"></a>rf_s_q2_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(rf_s_q2_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw)</span>
-<span id="cb46-81"><a href="#cb46-81" aria-hidden="true" tabindex="-1"></a>rf_w_q1_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(rf_w_q1_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw)</span>
-<span id="cb46-82"><a href="#cb46-82" aria-hidden="true" tabindex="-1"></a>rf_w_q2_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(rf_w_q2_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw)</span>
-<span id="cb46-83"><a href="#cb46-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-84"><a href="#cb46-84" aria-hidden="true" tabindex="-1"></a><span class="co"># Ria de Alvor data sets</span></span>
-<span id="cb46-85"><a href="#cb46-85" aria-hidden="true" tabindex="-1"></a>ra_s_q1_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(ra_s_q1_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw, <span class="at">species =</span> species_name, <span class="at">is_gravid =</span> <span class="st">`</span><span class="at">is_gravid?</span><span class="st">`</span>)</span>
-<span id="cb46-86"><a href="#cb46-86" aria-hidden="true" tabindex="-1"></a>ra_s_q2_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(ra_s_q2_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw, <span class="at">species =</span> species_name, <span class="at">is_gravid =</span> <span class="st">`</span><span class="at">is_gravid?</span><span class="st">`</span>)</span>
-<span id="cb46-87"><a href="#cb46-87" aria-hidden="true" tabindex="-1"></a>ra_w_q1_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(ra_w_q1_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw, <span class="at">species =</span> species_name, <span class="at">is_gravid =</span> <span class="st">`</span><span class="at">is_gravid?</span><span class="st">`</span>)</span>
-<span id="cb46-88"><a href="#cb46-88" aria-hidden="true" tabindex="-1"></a>ra_w_q2_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(ra_w_q2_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw, <span class="at">species =</span> species_name, <span class="at">is_gravid =</span> <span class="st">`</span><span class="at">is_gravid?</span><span class="st">`</span>)</span>
-<span id="cb46-89"><a href="#cb46-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-90"><a href="#cb46-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-91"><a href="#cb46-91" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.3</span></span>
-<span id="cb46-92"><a href="#cb46-92" aria-hidden="true" tabindex="-1"></a>crabs01 <span class="ot">&lt;-</span></span>
-<span id="cb46-93"><a href="#cb46-93" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(</span>
-<span id="cb46-94"><a href="#cb46-94" aria-hidden="true" tabindex="-1"></a>    rf_s_q1_02,</span>
-<span id="cb46-95"><a href="#cb46-95" aria-hidden="true" tabindex="-1"></a>    rf_s_q2_02,</span>
-<span id="cb46-96"><a href="#cb46-96" aria-hidden="true" tabindex="-1"></a>    rf_w_q1_02,</span>
-<span id="cb46-97"><a href="#cb46-97" aria-hidden="true" tabindex="-1"></a>    rf_w_q2_02,</span>
-<span id="cb46-98"><a href="#cb46-98" aria-hidden="true" tabindex="-1"></a>    ra_s_q1_02,</span>
-<span id="cb46-99"><a href="#cb46-99" aria-hidden="true" tabindex="-1"></a>    ra_s_q2_02,</span>
-<span id="cb46-100"><a href="#cb46-100" aria-hidden="true" tabindex="-1"></a>    ra_w_q1_02,</span>
-<span id="cb46-101"><a href="#cb46-101" aria-hidden="true" tabindex="-1"></a>    ra_w_q2_02</span>
-<span id="cb46-102"><a href="#cb46-102" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb46-103"><a href="#cb46-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-104"><a href="#cb46-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-105"><a href="#cb46-105" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.4</span></span>
-<span id="cb46-106"><a href="#cb46-106" aria-hidden="true" tabindex="-1"></a>crabs02 <span class="ot">&lt;-</span></span>
-<span id="cb46-107"><a href="#cb46-107" aria-hidden="true" tabindex="-1"></a>  crabs01 <span class="sc">%&gt;%</span></span>
-<span id="cb46-108"><a href="#cb46-108" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="st">"id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb46-109"><a href="#cb46-109" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">relocate</span>(</span>
-<span id="cb46-110"><a href="#cb46-110" aria-hidden="true" tabindex="-1"></a>    region,</span>
-<span id="cb46-111"><a href="#cb46-111" aria-hidden="true" tabindex="-1"></a>    season,</span>
-<span id="cb46-112"><a href="#cb46-112" aria-hidden="true" tabindex="-1"></a>    quadrat,</span>
-<span id="cb46-113"><a href="#cb46-113" aria-hidden="true" tabindex="-1"></a>    latitude,</span>
-<span id="cb46-114"><a href="#cb46-114" aria-hidden="true" tabindex="-1"></a>    longitude,</span>
-<span id="cb46-115"><a href="#cb46-115" aria-hidden="true" tabindex="-1"></a>    species,</span>
-<span id="cb46-116"><a href="#cb46-116" aria-hidden="true" tabindex="-1"></a>    sex,</span>
-<span id="cb46-117"><a href="#cb46-117" aria-hidden="true" tabindex="-1"></a>    stage,</span>
-<span id="cb46-118"><a href="#cb46-118" aria-hidden="true" tabindex="-1"></a>    is_gravid,</span>
-<span id="cb46-119"><a href="#cb46-119" aria-hidden="true" tabindex="-1"></a>    carapace_width,</span>
-<span id="cb46-120"><a href="#cb46-120" aria-hidden="true" tabindex="-1"></a>    carapace_length,</span>
-<span id="cb46-121"><a href="#cb46-121" aria-hidden="true" tabindex="-1"></a>    front_width,</span>
-<span id="cb46-122"><a href="#cb46-122" aria-hidden="true" tabindex="-1"></a>    left_claw_length,</span>
-<span id="cb46-123"><a href="#cb46-123" aria-hidden="true" tabindex="-1"></a>    right_claw_length</span>
-<span id="cb46-124"><a href="#cb46-124" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb46-125"><a href="#cb46-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-126"><a href="#cb46-126" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.5</span></span>
-<span id="cb46-127"><a href="#cb46-127" aria-hidden="true" tabindex="-1"></a>crabs03 <span class="ot">&lt;-</span> tidyr<span class="sc">::</span><span class="fu">fill</span>(<span class="at">data =</span> crabs02, latitude, longitude, <span class="at">.direction =</span> <span class="st">"down"</span>)</span>
-<span id="cb46-128"><a href="#cb46-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-129"><a href="#cb46-129" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.6</span></span>
-<span id="cb46-130"><a href="#cb46-130" aria-hidden="true" tabindex="-1"></a><span class="co"># These `sex_na_aliases` were inferred after running `unique(crabs03$sex)`</span></span>
-<span id="cb46-131"><a href="#cb46-131" aria-hidden="true" tabindex="-1"></a>sex_na_aliases <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"?"</span>, <span class="st">"male or female"</span>, <span class="st">"-"</span>, <span class="st">" "</span>, <span class="st">"N/R"</span>)</span>
-<span id="cb46-132"><a href="#cb46-132" aria-hidden="true" tabindex="-1"></a>crabs04 <span class="ot">&lt;-</span></span>
-<span id="cb46-133"><a href="#cb46-133" aria-hidden="true" tabindex="-1"></a>  crabs03 <span class="sc">%&gt;%</span></span>
-<span id="cb46-134"><a href="#cb46-134" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sex =</span> <span class="fu">if_else</span>(sex <span class="sc">%in%</span> sex_na_aliases, <span class="cn">NA_character_</span>, sex))</span>
-<span id="cb46-135"><a href="#cb46-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-136"><a href="#cb46-136" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.7</span></span>
-<span id="cb46-137"><a href="#cb46-137" aria-hidden="true" tabindex="-1"></a>crabs05 <span class="ot">&lt;-</span></span>
-<span id="cb46-138"><a href="#cb46-138" aria-hidden="true" tabindex="-1"></a>  crabs04 <span class="sc">%&gt;%</span></span>
-<span id="cb46-139"><a href="#cb46-139" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb46-140"><a href="#cb46-140" aria-hidden="true" tabindex="-1"></a>    <span class="at">species =</span> dplyr<span class="sc">::</span><span class="fu">recode</span>(</span>
-<span id="cb46-141"><a href="#cb46-141" aria-hidden="true" tabindex="-1"></a>      species,</span>
-<span id="cb46-142"><a href="#cb46-142" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">A. farensis</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Afruca farensis"</span>,</span>
-<span id="cb46-143"><a href="#cb46-143" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">U. olhanensis</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Uca olhanensis"</span>),</span>
-<span id="cb46-144"><a href="#cb46-144" aria-hidden="true" tabindex="-1"></a>    <span class="at">stage =</span> dplyr<span class="sc">::</span><span class="fu">recode</span>(</span>
-<span id="cb46-145"><a href="#cb46-145" aria-hidden="true" tabindex="-1"></a>      stage,</span>
-<span id="cb46-146"><a href="#cb46-146" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">j</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"juvenile"</span>,</span>
-<span id="cb46-147"><a href="#cb46-147" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">p</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"pre_puberty"</span>,</span>
-<span id="cb46-148"><a href="#cb46-148" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">s</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"sub_adult"</span>,</span>
-<span id="cb46-149"><a href="#cb46-149" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">a</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"adult"</span></span>
-<span id="cb46-150"><a href="#cb46-150" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb46-151"><a href="#cb46-151" aria-hidden="true" tabindex="-1"></a>    <span class="at">quadrat =</span> <span class="fu">substr</span>(quadrat, <span class="dv">2</span>, <span class="dv">2</span>)</span>
-<span id="cb46-152"><a href="#cb46-152" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb46-153"><a href="#cb46-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-154"><a href="#cb46-154" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.8</span></span>
-<span id="cb46-155"><a href="#cb46-155" aria-hidden="true" tabindex="-1"></a>crabs06 <span class="ot">&lt;-</span></span>
-<span id="cb46-156"><a href="#cb46-156" aria-hidden="true" tabindex="-1"></a>  crabs05 <span class="sc">%&gt;%</span></span>
-<span id="cb46-157"><a href="#cb46-157" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb46-158"><a href="#cb46-158" aria-hidden="true" tabindex="-1"></a>    <span class="at">carapace_width =</span> <span class="fu">if_else</span>(region <span class="sc">==</span> <span class="st">"Ria de Alvor"</span>, carapace_width <span class="sc">*</span> <span class="dv">10</span>, carapace_width),</span>
-<span id="cb46-159"><a href="#cb46-159" aria-hidden="true" tabindex="-1"></a>    <span class="at">carapace_length =</span> <span class="fu">if_else</span>(region <span class="sc">==</span> <span class="st">"Ria de Alvor"</span>, carapace_length <span class="sc">*</span> <span class="dv">10</span>, carapace_length),</span>
-<span id="cb46-160"><a href="#cb46-160" aria-hidden="true" tabindex="-1"></a>    <span class="at">front_width =</span> <span class="fu">if_else</span>(region <span class="sc">==</span> <span class="st">"Ria de Alvor"</span>, front_width <span class="sc">*</span> <span class="dv">10</span>, front_width),</span>
-<span id="cb46-161"><a href="#cb46-161" aria-hidden="true" tabindex="-1"></a>    <span class="at">left_claw_length =</span> <span class="fu">if_else</span>(region <span class="sc">==</span> <span class="st">"Ria de Alvor"</span>, left_claw_length <span class="sc">*</span> <span class="dv">10</span>, left_claw_length),</span>
-<span id="cb46-162"><a href="#cb46-162" aria-hidden="true" tabindex="-1"></a>    <span class="at">right_claw_length =</span> <span class="fu">if_else</span>(region <span class="sc">==</span> <span class="st">"Ria de Alvor"</span>, right_claw_length <span class="sc">*</span> <span class="dv">10</span>, right_claw_length)</span>
-<span id="cb46-163"><a href="#cb46-163" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb46-164"><a href="#cb46-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-165"><a href="#cb46-165" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.9</span></span>
-<span id="cb46-166"><a href="#cb46-166" aria-hidden="true" tabindex="-1"></a>crabs07 <span class="ot">&lt;-</span></span>
-<span id="cb46-167"><a href="#cb46-167" aria-hidden="true" tabindex="-1"></a>  crabs06 <span class="sc">%&gt;%</span></span>
-<span id="cb46-168"><a href="#cb46-168" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb46-169"><a href="#cb46-169" aria-hidden="true" tabindex="-1"></a>    <span class="at">region =</span> <span class="fu">factor</span>(region),</span>
-<span id="cb46-170"><a href="#cb46-170" aria-hidden="true" tabindex="-1"></a>    <span class="at">season =</span> <span class="fu">factor</span>(season),</span>
-<span id="cb46-171"><a href="#cb46-171" aria-hidden="true" tabindex="-1"></a>    <span class="at">quadrat =</span> <span class="fu">as.integer</span>(quadrat),</span>
-<span id="cb46-172"><a href="#cb46-172" aria-hidden="true" tabindex="-1"></a>    <span class="at">species =</span> <span class="fu">factor</span>(species),</span>
-<span id="cb46-173"><a href="#cb46-173" aria-hidden="true" tabindex="-1"></a>    <span class="at">sex =</span> <span class="fu">factor</span>(sex, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"female"</span>, <span class="st">"male"</span>)),</span>
-<span id="cb46-174"><a href="#cb46-174" aria-hidden="true" tabindex="-1"></a>    <span class="at">stage =</span> <span class="fu">factor</span>(stage, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"juvenile"</span>, <span class="st">"pre_puberty"</span>, <span class="st">"sub_adult"</span>, <span class="st">"adult"</span>), <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb46-175"><a href="#cb46-175" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb46-176"><a href="#cb46-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-177"><a href="#cb46-177" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.10</span></span>
-<span id="cb46-178"><a href="#cb46-178" aria-hidden="true" tabindex="-1"></a>quadrats02 <span class="ot">&lt;-</span></span>
-<span id="cb46-179"><a href="#cb46-179" aria-hidden="true" tabindex="-1"></a>  quadrats01 <span class="sc">%&gt;%</span></span>
-<span id="cb46-180"><a href="#cb46-180" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb46-181"><a href="#cb46-181" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"region_quadrat"</span>, <span class="at">values_to =</span> <span class="st">"area"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb46-182"><a href="#cb46-182" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">separate</span>(<span class="at">col =</span> <span class="st">"region_quadrat"</span>, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"region"</span>, <span class="st">"quadrat"</span>), <span class="at">sep =</span> <span class="st">"-"</span>)</span>
-<span id="cb46-183"><a href="#cb46-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-184"><a href="#cb46-184" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.11</span></span>
-<span id="cb46-185"><a href="#cb46-185" aria-hidden="true" tabindex="-1"></a>quadrats03 <span class="ot">&lt;-</span></span>
-<span id="cb46-186"><a href="#cb46-186" aria-hidden="true" tabindex="-1"></a>  quadrats02 <span class="sc">%&gt;%</span></span>
-<span id="cb46-187"><a href="#cb46-187" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb46-188"><a href="#cb46-188" aria-hidden="true" tabindex="-1"></a>    <span class="at">region =</span> <span class="fu">factor</span>(region),</span>
-<span id="cb46-189"><a href="#cb46-189" aria-hidden="true" tabindex="-1"></a>    <span class="at">quadrat =</span> <span class="fu">as.integer</span>(<span class="fu">substr</span>(quadrat, <span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb46-190"><a href="#cb46-190" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb46-191"><a href="#cb46-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-192"><a href="#cb46-192" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.12</span></span>
-<span id="cb46-193"><a href="#cb46-193" aria-hidden="true" tabindex="-1"></a>quadrats_coord <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">distinct</span>(crabs07, region, quadrat, latitude, longitude)</span>
-<span id="cb46-194"><a href="#cb46-194" aria-hidden="true" tabindex="-1"></a>quadrats04 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">left_join</span>(quadrats03, quadrats_coord)</span>
-<span id="cb46-195"><a href="#cb46-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-196"><a href="#cb46-196" aria-hidden="true" tabindex="-1"></a><span class="co"># And now we can drop latitude and longitude from the `crabs07` data set.</span></span>
-<span id="cb46-197"><a href="#cb46-197" aria-hidden="true" tabindex="-1"></a><span class="co"># Note the minus sign behind the vector of column names.</span></span>
-<span id="cb46-198"><a href="#cb46-198" aria-hidden="true" tabindex="-1"></a>crabs08 <span class="ot">&lt;-</span> <span class="fu">select</span>(crabs07, <span class="sc">-</span><span class="fu">c</span>(<span class="st">"latitude"</span>, <span class="st">"longitude"</span>))</span>
+<span id="cb46-40"><a href="#cb46-40" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.1</span></span>
+<span id="cb46-41"><a href="#cb46-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Ria Formosa data sets</span></span>
+<span id="cb46-42"><a href="#cb46-42" aria-hidden="true" tabindex="-1"></a>rf_s_q1_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(rf_s_q1, <span class="at">region =</span> <span class="st">"Ria Formosa"</span>, <span class="at">season =</span> <span class="st">"summer"</span>, <span class="at">quadrat =</span> <span class="st">"q1"</span>)</span>
+<span id="cb46-43"><a href="#cb46-43" aria-hidden="true" tabindex="-1"></a>rf_s_q2_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(rf_s_q2, <span class="at">region =</span> <span class="st">"Ria Formosa"</span>, <span class="at">season =</span> <span class="st">"summer"</span>, <span class="at">quadrat =</span> <span class="st">"q2"</span>)</span>
+<span id="cb46-44"><a href="#cb46-44" aria-hidden="true" tabindex="-1"></a>rf_w_q1_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(rf_w_q1, <span class="at">region =</span> <span class="st">"Ria Formosa"</span>, <span class="at">season =</span> <span class="st">"winter"</span>, <span class="at">quadrat =</span> <span class="st">"q1"</span>)</span>
+<span id="cb46-45"><a href="#cb46-45" aria-hidden="true" tabindex="-1"></a>rf_w_q2_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(rf_w_q2, <span class="at">region =</span> <span class="st">"Ria Formosa"</span>, <span class="at">season =</span> <span class="st">"winter"</span>, <span class="at">quadrat =</span> <span class="st">"q2"</span>)</span>
+<span id="cb46-46"><a href="#cb46-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-47"><a href="#cb46-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Ria de Alvor data sets</span></span>
+<span id="cb46-48"><a href="#cb46-48" aria-hidden="true" tabindex="-1"></a>ra_s_q1_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(ra_s_q1, <span class="at">region =</span> <span class="st">"Ria de Alvor"</span>, <span class="at">season =</span> <span class="st">"summer"</span>, <span class="at">quadrat =</span> <span class="st">"q1"</span>)</span>
+<span id="cb46-49"><a href="#cb46-49" aria-hidden="true" tabindex="-1"></a>ra_s_q2_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(ra_s_q2, <span class="at">region =</span> <span class="st">"Ria de Alvor"</span>, <span class="at">season =</span> <span class="st">"summer"</span>, <span class="at">quadrat =</span> <span class="st">"q2"</span>)</span>
+<span id="cb46-50"><a href="#cb46-50" aria-hidden="true" tabindex="-1"></a>ra_w_q1_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(ra_w_q1, <span class="at">region =</span> <span class="st">"Ria de Alvor"</span>, <span class="at">season =</span> <span class="st">"winter"</span>, <span class="at">quadrat =</span> <span class="st">"q1"</span>)</span>
+<span id="cb46-51"><a href="#cb46-51" aria-hidden="true" tabindex="-1"></a>ra_w_q2_01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(ra_w_q2, <span class="at">region =</span> <span class="st">"Ria de Alvor"</span>, <span class="at">season =</span> <span class="st">"winter"</span>, <span class="at">quadrat =</span> <span class="st">"q2"</span>)</span>
+<span id="cb46-52"><a href="#cb46-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-53"><a href="#cb46-53" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.2</span></span>
+<span id="cb46-54"><a href="#cb46-54" aria-hidden="true" tabindex="-1"></a><span class="co"># What column names are there in Ria de Alvor and not in Ria Formosa?</span></span>
+<span id="cb46-55"><a href="#cb46-55" aria-hidden="true" tabindex="-1"></a><span class="fu">setdiff</span>(<span class="fu">colnames</span>(ra_s_q1_01), <span class="fu">colnames</span>(rf_s_q1_01))</span>
+<span id="cb46-56"><a href="#cb46-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-57"><a href="#cb46-57" aria-hidden="true" tabindex="-1"></a><span class="co"># And now the reverse question.</span></span>
+<span id="cb46-58"><a href="#cb46-58" aria-hidden="true" tabindex="-1"></a><span class="fu">setdiff</span>(<span class="fu">colnames</span>(rf_s_q1_01), <span class="fu">colnames</span>(ra_s_q1_01))</span>
+<span id="cb46-59"><a href="#cb46-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-60"><a href="#cb46-60" aria-hidden="true" tabindex="-1"></a><span class="co"># So it seems Ria de Alvor data sets have named the `species` column as</span></span>
+<span id="cb46-61"><a href="#cb46-61" aria-hidden="true" tabindex="-1"></a><span class="co"># `species_name`, and `is_gravid?` contains a question mark. </span></span>
+<span id="cb46-62"><a href="#cb46-62" aria-hidden="true" tabindex="-1"></a><span class="co"># Let us fix by mapping:</span></span>
+<span id="cb46-63"><a href="#cb46-63" aria-hidden="true" tabindex="-1"></a><span class="co">#  - `species_name` to `species`</span></span>
+<span id="cb46-64"><a href="#cb46-64" aria-hidden="true" tabindex="-1"></a><span class="co">#  - `is_gravid?` to `is_gravid`</span></span>
+<span id="cb46-65"><a href="#cb46-65" aria-hidden="true" tabindex="-1"></a><span class="co"># And also, do not forget to map the abbreviated column names to their full</span></span>
+<span id="cb46-66"><a href="#cb46-66" aria-hidden="true" tabindex="-1"></a><span class="co"># names.</span></span>
+<span id="cb46-67"><a href="#cb46-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-68"><a href="#cb46-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-69"><a href="#cb46-69" aria-hidden="true" tabindex="-1"></a><span class="co"># Note how the mapping of the names is indicated in `rename()`:</span></span>
+<span id="cb46-70"><a href="#cb46-70" aria-hidden="true" tabindex="-1"></a><span class="co"># New names go in the left hand side of the equal sign and old names in</span></span>
+<span id="cb46-71"><a href="#cb46-71" aria-hidden="true" tabindex="-1"></a><span class="co"># the right hand side.</span></span>
+<span id="cb46-72"><a href="#cb46-72" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb46-73"><a href="#cb46-73" aria-hidden="true" tabindex="-1"></a><span class="co"># Ria Formosa data sets</span></span>
+<span id="cb46-74"><a href="#cb46-74" aria-hidden="true" tabindex="-1"></a>rf_s_q1_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(rf_s_q1_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw)</span>
+<span id="cb46-75"><a href="#cb46-75" aria-hidden="true" tabindex="-1"></a>rf_s_q2_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(rf_s_q2_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw)</span>
+<span id="cb46-76"><a href="#cb46-76" aria-hidden="true" tabindex="-1"></a>rf_w_q1_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(rf_w_q1_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw)</span>
+<span id="cb46-77"><a href="#cb46-77" aria-hidden="true" tabindex="-1"></a>rf_w_q2_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(rf_w_q2_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw)</span>
+<span id="cb46-78"><a href="#cb46-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-79"><a href="#cb46-79" aria-hidden="true" tabindex="-1"></a><span class="co"># Ria de Alvor data sets</span></span>
+<span id="cb46-80"><a href="#cb46-80" aria-hidden="true" tabindex="-1"></a>ra_s_q1_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(ra_s_q1_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw, <span class="at">species =</span> species_name, <span class="at">is_gravid =</span> <span class="st">`</span><span class="at">is_gravid?</span><span class="st">`</span>)</span>
+<span id="cb46-81"><a href="#cb46-81" aria-hidden="true" tabindex="-1"></a>ra_s_q2_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(ra_s_q2_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw, <span class="at">species =</span> species_name, <span class="at">is_gravid =</span> <span class="st">`</span><span class="at">is_gravid?</span><span class="st">`</span>)</span>
+<span id="cb46-82"><a href="#cb46-82" aria-hidden="true" tabindex="-1"></a>ra_w_q1_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(ra_w_q1_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw, <span class="at">species =</span> species_name, <span class="at">is_gravid =</span> <span class="st">`</span><span class="at">is_gravid?</span><span class="st">`</span>)</span>
+<span id="cb46-83"><a href="#cb46-83" aria-hidden="true" tabindex="-1"></a>ra_w_q2_02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(ra_w_q2_01, <span class="at">carapace_width =</span> cw, <span class="at">carapace_length =</span> cl, <span class="at">left_claw_length =</span> lcl, <span class="at">right_claw_length =</span> rcl, <span class="at">front_width =</span> fw, <span class="at">species =</span> species_name, <span class="at">is_gravid =</span> <span class="st">`</span><span class="at">is_gravid?</span><span class="st">`</span>)</span>
+<span id="cb46-84"><a href="#cb46-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-85"><a href="#cb46-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-86"><a href="#cb46-86" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.3</span></span>
+<span id="cb46-87"><a href="#cb46-87" aria-hidden="true" tabindex="-1"></a>crabs01 <span class="ot">&lt;-</span></span>
+<span id="cb46-88"><a href="#cb46-88" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(</span>
+<span id="cb46-89"><a href="#cb46-89" aria-hidden="true" tabindex="-1"></a>    rf_s_q1_02,</span>
+<span id="cb46-90"><a href="#cb46-90" aria-hidden="true" tabindex="-1"></a>    rf_s_q2_02,</span>
+<span id="cb46-91"><a href="#cb46-91" aria-hidden="true" tabindex="-1"></a>    rf_w_q1_02,</span>
+<span id="cb46-92"><a href="#cb46-92" aria-hidden="true" tabindex="-1"></a>    rf_w_q2_02,</span>
+<span id="cb46-93"><a href="#cb46-93" aria-hidden="true" tabindex="-1"></a>    ra_s_q1_02,</span>
+<span id="cb46-94"><a href="#cb46-94" aria-hidden="true" tabindex="-1"></a>    ra_s_q2_02,</span>
+<span id="cb46-95"><a href="#cb46-95" aria-hidden="true" tabindex="-1"></a>    ra_w_q1_02,</span>
+<span id="cb46-96"><a href="#cb46-96" aria-hidden="true" tabindex="-1"></a>    ra_w_q2_02</span>
+<span id="cb46-97"><a href="#cb46-97" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb46-98"><a href="#cb46-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-99"><a href="#cb46-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-100"><a href="#cb46-100" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.4</span></span>
+<span id="cb46-101"><a href="#cb46-101" aria-hidden="true" tabindex="-1"></a>crabs02 <span class="ot">&lt;-</span></span>
+<span id="cb46-102"><a href="#cb46-102" aria-hidden="true" tabindex="-1"></a>  crabs01 <span class="sc">%&gt;%</span></span>
+<span id="cb46-103"><a href="#cb46-103" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="st">"id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb46-104"><a href="#cb46-104" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">relocate</span>(</span>
+<span id="cb46-105"><a href="#cb46-105" aria-hidden="true" tabindex="-1"></a>    region,</span>
+<span id="cb46-106"><a href="#cb46-106" aria-hidden="true" tabindex="-1"></a>    season,</span>
+<span id="cb46-107"><a href="#cb46-107" aria-hidden="true" tabindex="-1"></a>    quadrat,</span>
+<span id="cb46-108"><a href="#cb46-108" aria-hidden="true" tabindex="-1"></a>    latitude,</span>
+<span id="cb46-109"><a href="#cb46-109" aria-hidden="true" tabindex="-1"></a>    longitude,</span>
+<span id="cb46-110"><a href="#cb46-110" aria-hidden="true" tabindex="-1"></a>    species,</span>
+<span id="cb46-111"><a href="#cb46-111" aria-hidden="true" tabindex="-1"></a>    sex,</span>
+<span id="cb46-112"><a href="#cb46-112" aria-hidden="true" tabindex="-1"></a>    stage,</span>
+<span id="cb46-113"><a href="#cb46-113" aria-hidden="true" tabindex="-1"></a>    is_gravid,</span>
+<span id="cb46-114"><a href="#cb46-114" aria-hidden="true" tabindex="-1"></a>    carapace_width,</span>
+<span id="cb46-115"><a href="#cb46-115" aria-hidden="true" tabindex="-1"></a>    carapace_length,</span>
+<span id="cb46-116"><a href="#cb46-116" aria-hidden="true" tabindex="-1"></a>    front_width,</span>
+<span id="cb46-117"><a href="#cb46-117" aria-hidden="true" tabindex="-1"></a>    left_claw_length,</span>
+<span id="cb46-118"><a href="#cb46-118" aria-hidden="true" tabindex="-1"></a>    right_claw_length</span>
+<span id="cb46-119"><a href="#cb46-119" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb46-120"><a href="#cb46-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-121"><a href="#cb46-121" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.5</span></span>
+<span id="cb46-122"><a href="#cb46-122" aria-hidden="true" tabindex="-1"></a>crabs03 <span class="ot">&lt;-</span> tidyr<span class="sc">::</span><span class="fu">fill</span>(<span class="at">data =</span> crabs02, latitude, longitude, <span class="at">.direction =</span> <span class="st">"down"</span>)</span>
+<span id="cb46-123"><a href="#cb46-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-124"><a href="#cb46-124" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.6</span></span>
+<span id="cb46-125"><a href="#cb46-125" aria-hidden="true" tabindex="-1"></a><span class="co"># These `sex_na_aliases` were inferred after running `unique(crabs03$sex)`</span></span>
+<span id="cb46-126"><a href="#cb46-126" aria-hidden="true" tabindex="-1"></a>sex_na_aliases <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"?"</span>, <span class="st">"male or female"</span>, <span class="st">"-"</span>, <span class="st">" "</span>, <span class="st">"N/R"</span>)</span>
+<span id="cb46-127"><a href="#cb46-127" aria-hidden="true" tabindex="-1"></a>crabs04 <span class="ot">&lt;-</span></span>
+<span id="cb46-128"><a href="#cb46-128" aria-hidden="true" tabindex="-1"></a>  crabs03 <span class="sc">%&gt;%</span></span>
+<span id="cb46-129"><a href="#cb46-129" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sex =</span> <span class="fu">if_else</span>(sex <span class="sc">%in%</span> sex_na_aliases, <span class="cn">NA_character_</span>, sex))</span>
+<span id="cb46-130"><a href="#cb46-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-131"><a href="#cb46-131" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.7</span></span>
+<span id="cb46-132"><a href="#cb46-132" aria-hidden="true" tabindex="-1"></a>crabs05 <span class="ot">&lt;-</span></span>
+<span id="cb46-133"><a href="#cb46-133" aria-hidden="true" tabindex="-1"></a>  crabs04 <span class="sc">%&gt;%</span></span>
+<span id="cb46-134"><a href="#cb46-134" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb46-135"><a href="#cb46-135" aria-hidden="true" tabindex="-1"></a>    <span class="at">species =</span> dplyr<span class="sc">::</span><span class="fu">recode</span>(</span>
+<span id="cb46-136"><a href="#cb46-136" aria-hidden="true" tabindex="-1"></a>      species,</span>
+<span id="cb46-137"><a href="#cb46-137" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">A. farensis</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Afruca farensis"</span>,</span>
+<span id="cb46-138"><a href="#cb46-138" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">U. olhanensis</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Uca olhanensis"</span>),</span>
+<span id="cb46-139"><a href="#cb46-139" aria-hidden="true" tabindex="-1"></a>    <span class="at">stage =</span> dplyr<span class="sc">::</span><span class="fu">recode</span>(</span>
+<span id="cb46-140"><a href="#cb46-140" aria-hidden="true" tabindex="-1"></a>      stage,</span>
+<span id="cb46-141"><a href="#cb46-141" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">j</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"juvenile"</span>,</span>
+<span id="cb46-142"><a href="#cb46-142" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">p</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"pre_puberty"</span>,</span>
+<span id="cb46-143"><a href="#cb46-143" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">s</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"sub_adult"</span>,</span>
+<span id="cb46-144"><a href="#cb46-144" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">a</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"adult"</span></span>
+<span id="cb46-145"><a href="#cb46-145" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb46-146"><a href="#cb46-146" aria-hidden="true" tabindex="-1"></a>    <span class="at">quadrat =</span> <span class="fu">substr</span>(quadrat, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb46-147"><a href="#cb46-147" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb46-148"><a href="#cb46-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-149"><a href="#cb46-149" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.8</span></span>
+<span id="cb46-150"><a href="#cb46-150" aria-hidden="true" tabindex="-1"></a>crabs06 <span class="ot">&lt;-</span></span>
+<span id="cb46-151"><a href="#cb46-151" aria-hidden="true" tabindex="-1"></a>  crabs05 <span class="sc">%&gt;%</span></span>
+<span id="cb46-152"><a href="#cb46-152" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb46-153"><a href="#cb46-153" aria-hidden="true" tabindex="-1"></a>    <span class="at">carapace_width =</span> <span class="fu">if_else</span>(region <span class="sc">==</span> <span class="st">"Ria de Alvor"</span>, carapace_width <span class="sc">*</span> <span class="dv">10</span>, carapace_width),</span>
+<span id="cb46-154"><a href="#cb46-154" aria-hidden="true" tabindex="-1"></a>    <span class="at">carapace_length =</span> <span class="fu">if_else</span>(region <span class="sc">==</span> <span class="st">"Ria de Alvor"</span>, carapace_length <span class="sc">*</span> <span class="dv">10</span>, carapace_length),</span>
+<span id="cb46-155"><a href="#cb46-155" aria-hidden="true" tabindex="-1"></a>    <span class="at">front_width =</span> <span class="fu">if_else</span>(region <span class="sc">==</span> <span class="st">"Ria de Alvor"</span>, front_width <span class="sc">*</span> <span class="dv">10</span>, front_width),</span>
+<span id="cb46-156"><a href="#cb46-156" aria-hidden="true" tabindex="-1"></a>    <span class="at">left_claw_length =</span> <span class="fu">if_else</span>(region <span class="sc">==</span> <span class="st">"Ria de Alvor"</span>, left_claw_length <span class="sc">*</span> <span class="dv">10</span>, left_claw_length),</span>
+<span id="cb46-157"><a href="#cb46-157" aria-hidden="true" tabindex="-1"></a>    <span class="at">right_claw_length =</span> <span class="fu">if_else</span>(region <span class="sc">==</span> <span class="st">"Ria de Alvor"</span>, right_claw_length <span class="sc">*</span> <span class="dv">10</span>, right_claw_length)</span>
+<span id="cb46-158"><a href="#cb46-158" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb46-159"><a href="#cb46-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-160"><a href="#cb46-160" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.9</span></span>
+<span id="cb46-161"><a href="#cb46-161" aria-hidden="true" tabindex="-1"></a>crabs07 <span class="ot">&lt;-</span></span>
+<span id="cb46-162"><a href="#cb46-162" aria-hidden="true" tabindex="-1"></a>  crabs06 <span class="sc">%&gt;%</span></span>
+<span id="cb46-163"><a href="#cb46-163" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb46-164"><a href="#cb46-164" aria-hidden="true" tabindex="-1"></a>    <span class="at">region =</span> <span class="fu">factor</span>(region),</span>
+<span id="cb46-165"><a href="#cb46-165" aria-hidden="true" tabindex="-1"></a>    <span class="at">season =</span> <span class="fu">factor</span>(season),</span>
+<span id="cb46-166"><a href="#cb46-166" aria-hidden="true" tabindex="-1"></a>    <span class="at">quadrat =</span> <span class="fu">as.integer</span>(quadrat),</span>
+<span id="cb46-167"><a href="#cb46-167" aria-hidden="true" tabindex="-1"></a>    <span class="at">species =</span> <span class="fu">factor</span>(species),</span>
+<span id="cb46-168"><a href="#cb46-168" aria-hidden="true" tabindex="-1"></a>    <span class="at">sex =</span> <span class="fu">factor</span>(sex, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"female"</span>, <span class="st">"male"</span>)),</span>
+<span id="cb46-169"><a href="#cb46-169" aria-hidden="true" tabindex="-1"></a>    <span class="at">stage =</span> <span class="fu">factor</span>(stage, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"juvenile"</span>, <span class="st">"pre_puberty"</span>, <span class="st">"sub_adult"</span>, <span class="st">"adult"</span>), <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb46-170"><a href="#cb46-170" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb46-171"><a href="#cb46-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-172"><a href="#cb46-172" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.10</span></span>
+<span id="cb46-173"><a href="#cb46-173" aria-hidden="true" tabindex="-1"></a>quadrats02 <span class="ot">&lt;-</span></span>
+<span id="cb46-174"><a href="#cb46-174" aria-hidden="true" tabindex="-1"></a>  quadrats01 <span class="sc">%&gt;%</span></span>
+<span id="cb46-175"><a href="#cb46-175" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb46-176"><a href="#cb46-176" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"region_quadrat"</span>, <span class="at">values_to =</span> <span class="st">"area"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb46-177"><a href="#cb46-177" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">separate</span>(<span class="at">col =</span> <span class="st">"region_quadrat"</span>, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"region"</span>, <span class="st">"quadrat"</span>), <span class="at">sep =</span> <span class="st">"-"</span>)</span>
+<span id="cb46-178"><a href="#cb46-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-179"><a href="#cb46-179" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.11</span></span>
+<span id="cb46-180"><a href="#cb46-180" aria-hidden="true" tabindex="-1"></a>quadrats03 <span class="ot">&lt;-</span></span>
+<span id="cb46-181"><a href="#cb46-181" aria-hidden="true" tabindex="-1"></a>  quadrats02 <span class="sc">%&gt;%</span></span>
+<span id="cb46-182"><a href="#cb46-182" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb46-183"><a href="#cb46-183" aria-hidden="true" tabindex="-1"></a>    <span class="at">region =</span> <span class="fu">factor</span>(region),</span>
+<span id="cb46-184"><a href="#cb46-184" aria-hidden="true" tabindex="-1"></a>    <span class="at">quadrat =</span> <span class="fu">as.integer</span>(<span class="fu">substr</span>(quadrat, <span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb46-185"><a href="#cb46-185" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb46-186"><a href="#cb46-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-187"><a href="#cb46-187" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.12</span></span>
+<span id="cb46-188"><a href="#cb46-188" aria-hidden="true" tabindex="-1"></a>quadrats_coord <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">distinct</span>(crabs07, region, quadrat, latitude, longitude)</span>
+<span id="cb46-189"><a href="#cb46-189" aria-hidden="true" tabindex="-1"></a>quadrats04 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">left_join</span>(quadrats03, quadrats_coord)</span>
+<span id="cb46-190"><a href="#cb46-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-191"><a href="#cb46-191" aria-hidden="true" tabindex="-1"></a><span class="co"># And now we can drop latitude and longitude from the `crabs07` data set.</span></span>
+<span id="cb46-192"><a href="#cb46-192" aria-hidden="true" tabindex="-1"></a><span class="co"># Note the minus sign behind the vector of column names.</span></span>
+<span id="cb46-193"><a href="#cb46-193" aria-hidden="true" tabindex="-1"></a>crabs08 <span class="ot">&lt;-</span> <span class="fu">select</span>(crabs07, <span class="sc">-</span><span class="fu">c</span>(<span class="st">"latitude"</span>, <span class="st">"longitude"</span>))</span>
+<span id="cb46-194"><a href="#cb46-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-195"><a href="#cb46-195" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.13</span></span>
+<span id="cb46-196"><a href="#cb46-196" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign to new variables with simpler names</span></span>
+<span id="cb46-197"><a href="#cb46-197" aria-hidden="true" tabindex="-1"></a>quadrats <span class="ot">&lt;-</span> quadrats04</span>
+<span id="cb46-198"><a href="#cb46-198" aria-hidden="true" tabindex="-1"></a>crabs <span class="ot">&lt;-</span> crabs08</span>
 <span id="cb46-199"><a href="#cb46-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-200"><a href="#cb46-200" aria-hidden="true" tabindex="-1"></a><span class="co"># EXERCISE 2.13</span></span>
-<span id="cb46-201"><a href="#cb46-201" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign to new variables with simpler names</span></span>
-<span id="cb46-202"><a href="#cb46-202" aria-hidden="true" tabindex="-1"></a>quadrats <span class="ot">&lt;-</span> quadrats04</span>
-<span id="cb46-203"><a href="#cb46-203" aria-hidden="true" tabindex="-1"></a>crabs <span class="ot">&lt;-</span> crabs08</span>
+<span id="cb46-200"><a href="#cb46-200" aria-hidden="true" tabindex="-1"></a><span class="co"># Export to disk</span></span>
+<span id="cb46-201"><a href="#cb46-201" aria-hidden="true" tabindex="-1"></a>data_tidy_path <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data-tidy"</span>)</span>
+<span id="cb46-202"><a href="#cb46-202" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_csv</span>(quadrats, <span class="at">file =</span> <span class="fu">file.path</span>(data_tidy_path, <span class="st">"quadrats.csv"</span>))</span>
+<span id="cb46-203"><a href="#cb46-203" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_csv</span>(crabs, <span class="at">file =</span> <span class="fu">file.path</span>(data_tidy_path, <span class="st">"crabs.csv"</span>))</span>
 <span id="cb46-204"><a href="#cb46-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-205"><a href="#cb46-205" aria-hidden="true" tabindex="-1"></a><span class="co"># Export to disk</span></span>
-<span id="cb46-206"><a href="#cb46-206" aria-hidden="true" tabindex="-1"></a>data_tidy_path <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data-tidy"</span>)</span>
-<span id="cb46-207"><a href="#cb46-207" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_csv</span>(quadrats, <span class="at">file =</span> <span class="fu">file.path</span>(data_tidy_path, <span class="st">"quadrats.csv"</span>))</span>
-<span id="cb46-208"><a href="#cb46-208" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_csv</span>(crabs, <span class="at">file =</span> <span class="fu">file.path</span>(data_tidy_path, <span class="st">"crabs.csv"</span>))</span>
-<span id="cb46-209"><a href="#cb46-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-210"><a href="#cb46-210" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(quadrats, <span class="at">file =</span> <span class="fu">file.path</span>(data_tidy_path, <span class="st">"quadrats.rds"</span>))</span>
-<span id="cb46-211"><a href="#cb46-211" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(crabs, <span class="at">file =</span> <span class="fu">file.path</span>(data_tidy_path, <span class="st">"crabs.rds"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb46-205"><a href="#cb46-205" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(quadrats, <span class="at">file =</span> <span class="fu">file.path</span>(data_tidy_path, <span class="st">"quadrats.rds"</span>))</span>
+<span id="cb46-206"><a href="#cb46-206" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(crabs, <span class="at">file =</span> <span class="fu">file.path</span>(data_tidy_path, <span class="st">"crabs.rds"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
@@ -1295,6 +1297,24 @@ $ right_claw_length &lt;dbl&gt; 10, 15, 5, 14, 7, 6, 9, 5, 10, 12, 13, 15, 11, 1
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -1344,7 +1364,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      let href = ref.getAttribute('href');
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
