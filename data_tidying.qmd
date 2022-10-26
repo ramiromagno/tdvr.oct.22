@@ -115,7 +115,7 @@ We can tell you that there are discrepancies between the data sets coming from R
 Also, the two teams had abbreviated the name of the morphological variables, and we find them hard to read, so we will rename them to new names as indicated in this table:
 
 | Current name | New name            | Meaning                                            |
-|------------------|------------------|-----------------------------------|
+|--------------|---------------------|----------------------------------------------------|
 | `cw`         | `carapace_width`    | Carapace width                                     |
 | `cl`         | `carapace_length`   | Carapace length                                    |
 | `fw`         | `front_width`       | Front width (distance between the crab eye stalks) |

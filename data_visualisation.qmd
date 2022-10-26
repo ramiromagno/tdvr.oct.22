@@ -195,8 +195,8 @@ The latest plots were showing three variables:
 
 Let us see how far we may go by mapping more variables to other aesthetics.
 Besides the variables `species` and `sex`, `stage` (crab developmental stage) is
-also an important demographics' variable. Let us add too to the mix. There is an
-aesthetic called `colour` that adjust the colour of the bar outline.
+also an important demographics' variable. Let us add that too to the mix. There is an
+aesthetic called `colour` that adjusts the colour of the bar outline.
 
 So, try to make a new plot where, in addition, the `colour` aesthetic is mapped
 to `stage`.
@@ -254,3 +254,128 @@ ggplot(mapping = aes(x = sex, y = n, fill = stage)) +
   geom_col(position = position_dodge2(preserve = "single")) +
   facet_grid(rows = vars(season), cols = vars(species))
 ```
+
+Based on this plot can you tell:
+
+- What developmental stages are more abundant? Sexual maturation of the fiddler
+crabs occurs from `pre_puberty` to `sub_adult`.  It seems there is quite a
+significant different between the abundance of the stages prior to sexual
+maturation and posterior to that. Can you perhaps put forward an explanation
+by speculating on the relative duration of each stage.
+
+- Also, does the crab abundance also change between summer and winter? How so?
+
+Note that, by default, when you do faceting, `{ggplot2}` will automatically
+pick the range (or order) of the values in the x-axis and y-axis such that
+all plots are readily comparable. Although this is generally a desirable
+feature, it might also make answering specific questions more difficult.
+For example, the relative abundances across stages in the winter are difficult
+to appreciate because the overall abundance in the winter is so reduced. It
+would be nice if we could change the y-axis of the winter panels to show
+the full range.
+
+### Exercise 3.8
+
+Look up the documentation of the `facet_grid()` and find the parameter taken
+by this function that allows you to free the y-axis to be expressed in its
+full range.
+
+Is the pattern of crab abundance across `stage` more extreme in the summer or in
+winter?
+
+```{r}
+#| code-fold: true
+#| code-summary: "Solution to Exercise 3.8"
+
+# The `facet_grid()` parameter that allows you to free the y-axis is: `scales`.
+# 
+# Allowing the y-scale to be different between summer and winter allows us
+# to better appreciate differences across stages in the winter season.
+ggplot(data = count(crabs, species, sex, stage, season), mapping = aes(x = sex, y = n, fill = stage)) +
+  geom_col(position = position_dodge2(preserve = "single"), na.rm = TRUE) +
+  scale_x_discrete(na.translate = FALSE) +
+  facet_grid(rows = vars(season), cols = vars(species), scales = "free_y")
+```
+
+It seems that in the winter season we find mostly adult crabs, followed by a
+small percentage of sub-adult crabs, and we are very unlikely to find juveniles
+or pre-puberty crabs.
+
+Perhaps it would be nice to show these percentages instead. The absolute abundances
+are, after all, influenced by the sampling effort by the marine biologist, and 
+the sampling area of the quadrats.
+
+### Exercise 3.9
+
+Use a combination of `dplyr::count()`, `dplyr::group_by()` and `dplyr::mutate()`
+to create a new variable (i.e. column) for the percentage of crabs within each
+panel (i.e. species-season combination). Name this new column `pct`
+(abbreviation of percentage).
+
+```{r}
+#| code-fold: true
+#| code-summary: "Solution to Exercise 3.9"
+
+# To further distinguish the distribution across stages we might want to normalise
+# with respect to the species-season combination and show a percentage.
+count(crabs, species, sex, stage, season) %>%
+  group_by(species, season) %>%
+  mutate(pct = 100 * n / sum(n, na.rm = TRUE)) %>%
+  ggplot(mapping = aes(x = sex, y = pct, fill = stage)) +
+  geom_col(position = position_dodge2(preserve = "single"), na.rm = TRUE) +
+  scale_x_discrete(na.translate = FALSE) +
+  facet_grid(rows = vars(season), cols = vars(species), scales = "free_y")
+```
+
+Take a look at the variations below (V1--V3) and pay attention to the small
+code changes and their effects on the style of the plot.
+
+::: {.panel-tabset}
+
+### V1
+
+```{r}
+# Polish the scales' labels.
+count(crabs, species, sex, stage, season) %>%
+  group_by(species, season) %>%
+  mutate(frac = n / sum(n, na.rm = TRUE)) %>%
+  ggplot(mapping = aes(x = sex, y = frac, fill = stage)) +
+  geom_col(position = position_dodge2(preserve = "single"), na.rm = TRUE) +
+  scale_x_discrete(na.translate = FALSE, labels = c("Female", "Male")) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_ordinal(labels = c("Juvenile", "Pre-puberty", "Sub-adult", "Adult")) +
+  labs(x = 'Crab sex', y = "Population percentage", fill = "Dev. stage") +
+  facet_grid(rows = vars(season), cols = vars(species), scales = "free_y")
+```
+
+### V2
+
+```{r}
+count(crabs, species, sex, stage, season) %>%
+  group_by(species, season) %>%
+  mutate(frac = n / sum(n, na.rm = TRUE)) %>%
+  ggplot(mapping = aes(x = sex, y = frac, fill = stage)) +
+  geom_col(position = position_dodge2(preserve = "single"), na.rm = TRUE) +
+  scale_x_discrete(na.translate = FALSE, labels = c("Female", "Male")) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_ordinal(limits = rev, labels = rev(c("Juvenile", "Pre-puberty", "Sub-adult", "Adult"))) +
+  labs(x = 'Crab sex', y = "Population percentage", fill = "Dev. stage") +
+  facet_grid(rows = vars(season), cols = vars(species), scales = "free_y")
+```
+
+### V3
+
+```{r}
+count(crabs, species, sex, stage, season) %>%
+  group_by(species, season) %>%
+  mutate(frac = n / sum(n, na.rm = TRUE)) %>%
+  ggplot(mapping = aes(x = sex, y = frac, fill = stage)) +
+  geom_col(position = position_dodge2(preserve = "single"), na.rm = TRUE) +
+  scale_x_discrete(na.translate = FALSE, labels = c("Female", "Male")) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_hue(labels = c("Juvenile", "Pre-puberty", "Sub-adult", "Adult")) +
+  labs(x = 'Crab sex', y = "Population percentage", fill = "Dev. stage") +
+  facet_grid(rows = vars(season), cols = vars(species), scales = "free_y")
+```
+
+:::
