@@ -35,6 +35,7 @@ In this tutorial you'll learn:
 library(tidyverse)
 library(here)
 library(patchwork)
+library(ggridges)
 
 data_tidy_path <- here::here("data-tidy")
 quadrats <- readRDS(file = file.path(data_tidy_path, "quadrats.rds"))
@@ -379,3 +380,314 @@ count(crabs, species, sex, stage, season) %>%
 ```
 
 :::
+
+## Colours
+
+### Exercise 3.10
+
+Let us play around with the colours of the `stage` scale!
+
+In the previous plots, the colours used to identify the four stages were
+automatically chosen for us. Note that we already had seen the colours changing
+when we changed the fill scale using the functions:
+
+- `scale_fill_ordinal()` (previous V2 plot)
+- `scale_fill_hue()` (previous V3 plot)
+
+These two functions changed the colours of the fill aesthetic automatically.
+But we can also change the colors manually. And, yes, you guessed it right,
+the function to do that will be `scale_fill_manual()`.
+
+So, take the previous example given as V3, and replace it with `scale_fill_manual()`.
+You will need to instruct `scale_fill_manual()` on what colours to use. This
+function takes a parameter `values` that accepts a vector of colours. Given
+that there are four dev. stages, we will need to pass it four colours.
+
+Now, there are several ways of specifying colours. R understands a set of
+predefined colours by name, i.e. you can pass to `values` a character vector
+of colour names. How to find out what colour names are available? We may run
+the function `colours()` to find out:
+
+```{r}
+# Note: the american spelling also exists, so `colors()` works just as fine.
+colour_names <- colours()
+
+# Here are the first 10 colour names
+colour_names[1:10]
+
+# Here are some other 10 colours names
+colour_names[101:110]
+```
+
+Are you wondering how they look like? You can find a few of them here:
+<http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf>.
+
+So, choose four of those colours by name, and use them to create a character
+vector, and pass that vector to the parameter `values` of
+`scale_fill_manual()`.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Solution to Exercise 3.10"
+
+my_wonderful_colours <- c("orange", "olivedrab1", "steelblue1", "yellow")
+
+count(crabs, species, sex, stage, season) %>%
+  group_by(species, season) %>%
+  mutate(frac = n / sum(n, na.rm = TRUE)) %>%
+  ggplot(mapping = aes(x = sex, y = frac, fill = stage)) +
+  geom_col(position = position_dodge2(preserve = "single"), na.rm = TRUE) +
+  scale_x_discrete(na.translate = FALSE, labels = c("Female", "Male")) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_manual(values = my_wonderful_colours) +
+  labs(x = 'Crab sex', y = "Population percentage", fill = "Dev. stage") +
+  facet_grid(rows = vars(season), cols = vars(species), scales = "free_y")
+```
+
+If want to play a bit with different colours, note that you can save the
+ggplot2 commands to a variable, and then re-use that variable, and add a few
+extra ggplot2 commands. Confusing? Look at this example:
+
+```{r}
+# I am creating here a variable named `p` (short for plot)
+# Note that I have removed the `scale_fill_manual()` so the plot will
+# render with default colours.
+# 
+p <- count(crabs, species, sex, stage, season) %>%
+  group_by(species, season) %>%
+  mutate(frac = n / sum(n, na.rm = TRUE)) %>%
+  ggplot(mapping = aes(x = sex, y = frac, fill = stage)) +
+  geom_col(position = position_dodge2(preserve = "single"), na.rm = TRUE) +
+  scale_x_discrete(na.translate = FALSE, labels = c("Female", "Male")) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = 'Crab sex', y = "Population percentage", fill = "Dev. stage") +
+  facet_grid(rows = vars(season), cols = vars(species), scales = "free_y")
+
+# When you save a series of ggplot2 commands into a variable, R will not render
+# the plot in the Plots pane. You have to run the variable in the console to
+# render your plot. That is what I am doing in the next line.
+p
+```
+
+What is nice about having that variable `p` holding those commands, is that now
+it is less verbose to make little changes to the plot, as we can reuse `p`. Look
+how I am about to use it and change the colours with minimal code:
+
+```{r}
+p +
+  scale_fill_manual(values = c("aquamarine", "aquamarine1", "aquamarine2", "aquamarine3"))
+```
+
+Here is the same plot with a yet another set of colours:
+
+```{r}
+p +
+  scale_fill_manual(values = c("chartreuse", "chartreuse1", "chartreuse2", "chartreuse3"))
+```
+
+```{r}
+# rep(): repeats values
+my_nice_alternating_colours <- rep(c("deepskyblue", "gray"), 2)
+p +
+  scale_fill_manual(values = my_nice_alternating_colours)
+```
+
+Okay, nice! What if I want to have more control over the choice of my colours?
+We can do that by indicating the hexadecimal code of our colours of interest.
+These hexadecimal codes are strings that look like this: `"#65eab8"`. You
+can use these codes instead of the colour names.
+
+Go to <https://colorpicker.me/> and pick four colours. Then use those hex codes
+instead of the colour names:
+
+```{r}
+hexadecimal_codes <- c("#65eab8", "#657aea", "#d865eb", "#eb6593")
+p +
+  scale_fill_manual(values = hexadecimal_codes)
+```
+
+Please show better taste than me and choose better-looking colours!
+
+### Making different plot types
+
+Okay, enough of bar plots! Let us start making other types of plots. To control
+the type of plot, we use the family of `geom_*()` functions. In the previous
+examples we only used `geom_col()`.
+
+There are lots of different plot types, and depending on the variable types,
+some plot types might be more or less appropriate.
+
+Here is a nice website providing an overview of basic plot types you can make
+with `{ggplot2}`: <https://r-graph-gallery.com/>.
+
+Let us focus now on one of the quantitative variables: `carapace_width`. 
+
+::: {.panel-tabset}
+
+### Violin
+
+```{r}
+crabs %>%
+  drop_na(sex) %>%
+  ggplot(mapping = aes(x = stage, y = carapace_width, fill = sex)) +
+  geom_violin()
+```
+
+### Density
+
+```{r}
+crabs %>%
+  ggplot(mapping = aes(x = carapace_width, fill = sex)) +
+  geom_density(alpha=0.8)
+```
+
+### Histogram
+
+```{r}
+crabs %>%
+  ggplot(mapping = aes(x = carapace_width, fill = sex, col = sex)) +
+  geom_histogram(alpha=0.8, position = 'identity')
+```
+
+### Boxplot 1
+
+```{r}
+crabs %>%
+  ggplot(mapping = aes(y = carapace_width, fill = sex)) +
+  geom_boxplot()
+```
+
+### Boxplot 2
+
+```{r}
+crabs %>%
+  ggplot(mapping = aes(x = carapace_width, fill = stage)) +
+  geom_boxplot()
+```
+
+### Ridgeline
+
+```{r}
+crabs %>%
+  tidyr::drop_na(sex) %>%
+  ggplot(mapping = aes(x = carapace_width, y = stage, fill = stage)) +
+  geom_density_ridges(alpha = 0.8)
+```
+
+:::
+
+How is the carapace width related to the claw length? Is there dimorphism?
+What about handedness? Is the asymmetry in claw length across developmental
+stages?
+
+::: {.panel-tabset}
+
+### Scatter plot 1
+
+```{r}
+crabs %>%
+  tidyr::drop_na(sex) %>%
+  ggplot(mapping = aes(x = carapace_width)) +
+  geom_point(mapping = aes(y = left_claw_length), col = "red", alpha = 0.2) +
+  geom_point(mapping = aes(y = right_claw_length), col = "blue", alpha = 0.2) +
+  facet_wrap(vars(species))
+```
+
+### Scatter plot 2
+
+```{r}
+crabs %>%
+  tidyr::drop_na(sex) %>%
+  ggplot(mapping = aes(x = carapace_width)) +
+  geom_point(mapping = aes(y = left_claw_length), col = "red", alpha = 0.5, shape = 1) +
+  geom_point(mapping = aes(y = right_claw_length), col = "blue", alpha = 0.5, shape = 1) +
+  facet_grid(cols = vars(species), rows = vars(sex)) +
+  ylab("Claw length (mm)") + xlab("Carapace width (mm)")
+```
+
+### Scatter plot 3
+
+```{r}
+crabs %>%
+  ggplot(mapping = aes(x = carapace_width)) +
+  geom_point(mapping = aes(y = left_claw_length), col = "red", alpha = 0.5) +
+  geom_point(mapping = aes(y = right_claw_length), col = "blue", alpha = 0.5) +
+  facet_grid(cols = vars(species), rows = vars(stage)) +
+  ylab("Claw length (mm)") + xlab("Carapace width (mm)")
+```
+
+:::
+
+
+## How to export plots?
+
+It's very easy:
+
+1. Save your plot into a variable.
+2. Pass that variable to the function `ggsave()`.
+
+```r
+my_plot <-
+  crabs %>%
+  ggplot(mapping = aes(x = carapace_width)) +
+  geom_point(mapping = aes(y = left_claw_length), col = "red", alpha = 0.5) +
+  geom_point(mapping = aes(y = right_claw_length), col = "blue", alpha = 0.5) +
+  facet_grid(cols = vars(species), rows = vars(stage)) +
+  ylab("Claw length (mm)") + xlab("Carapace width (mm)")
+
+# This command will create a new file named "cl_vs_cw.png" inside the directory
+# plots/.
+ggsave(filename = "cl_vs_cw.png", plot = my_plot, path = "plots")
+
+# Try exporting to other formats, you just need to change the file extension.
+ggsave(filename = "cl_vs_cw.pdf", plot = my_plot, path = "plots")
+
+# Adjust the plot dimensions using the `width`, `height` and `units` parameters.
+ggsave(filename = "cl_vs_cw.pdf",
+       plot = my_plot,
+       path = "plots",
+       width = 15,
+       height = 10,
+       units = "cm")
+```
+
+## Mini-project
+
+Creating graphics and plots with `{ggplot2}` it is not too hard. However,
+there are many, many options to choose, and so it can feel a bit overwhelming.
+And it's impossible to learn every single option in one course. Instead, you
+should learn where to look for information. Fortunately, the official
+documentation of `{ggplot2}` is pretty good.
+
+- <https://ggplot2.tidyverse.org/>
+
+Moreover, there are many other packages that provide extra functionality
+not included in the standard `{ggplot2}` package.
+
+- <https://exts.ggplot2.tidyverse.org/gallery/>
+
+One very useful package is `{patchwork}`. This package allows you to assemble
+an article figure from a set of plots. This is amazing!
+
+- <https://patchwork.data-imaginist.com/>
+
+So the last exercise is a mini-project where you will try to make a figure
+consisting of a few set of panels. The idea is for you to choose focused
+research question about the fiddlers crabs data set, and conceptualise
+a figure and its component plots. So, again, in bullet points:
+
+1. Decide on question about the crabs data set. Examples: (i) demographics of
+fiddler crabs; or, (ii) characterisation of crab dimorphism, etc..
+2. Decide how many plots, and their types. Help yourself with:
+<https://r-graph-gallery.com/index.html>.
+3. Use `{patchwork}` to make the figure.
+4. Export it to PDF into the `plots/` folder.
+5. Finally, send your PDF to the trainers for a final showcase amongst the
+participants.
+
+The idea here is for you to try to work with more independence. But, of course,
+count on us to help along the way!
+
+
+
+
